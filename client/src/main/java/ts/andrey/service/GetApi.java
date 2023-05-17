@@ -1,0 +1,41 @@
+package ts.andrey.service;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
+import ts.andrey.dto.OrderingDTO;
+
+import java.util.List;
+
+@Component
+public class GetApi extends AbstractClientService {
+
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+
+    public GetApi(RestTemplate restTemplate) {
+        super(restTemplate);
+    }
+
+    public Object sendOrder(String baseUrl, OrderingDTO orderingDTO) {
+        try {
+            return send(baseUrl, OBJECT_MAPPER.writeValueAsString(orderingDTO), Object.class);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public <T> List<T> getObjectList(String url, Class<T[]> clazz) {
+        String result = null;
+        T[] objArray = null;
+
+        try {
+            result = GetRequest.getHTML(url);
+            objArray = OBJECT_MAPPER.readValue(result, clazz);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return List.of(objArray);
+    }
+
+}

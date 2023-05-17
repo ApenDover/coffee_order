@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Order</title>
+    <meta http-equiv="refresh" content="5" charset="UTF-8">
+    <style>
+
+        A {
+            color: #cfcfcf; /* Цвет ссылок */
+        }
+
+        TABLE {
+            border-collapse: collapse;
+            text-align: center;
+        }
+
+        TD, TH {
+            border: 1px solid black;
+            color: #cfcfcf;
+        }
+
+        TH {
+            color: #FEFEFE;
+            background: #3c3f41;
+        }
+
+        BODY{
+            background: #2b2b2b;
+        }
+
+        .underCard {
+            display: flex;
+            justify-content: center;
+            /*align-items: center;*/
+            /*padding-left: 5vw;*/
+        }
+
+        .cardMain {
+            display: flex;
+            flex-wrap: wrap;
+            /*justify-content: center;*/
+            /*align-items: center;*/
+            flex-direction: row;
+        }
+
+        .card {
+            display: inline-block;
+        }
+
+        .buttonCard {
+            width: 12vw;
+            height: 350px;
+            box-shadow: inset 0px 1px 0px 1px #9acc85;
+            background: linear-gradient(to bottom, #74ad5a 5%, #68a54b 100%);
+            background-color: #74ad5a;
+            border: 1px solid #3b6e22;
+            /*display: inline-block;*/
+            cursor: pointer;
+            color: #2b2b2b;
+            font-family: Arial;
+            font-weight: bold;
+            /*padding: 3px 6px;*/
+            text-decoration: none;
+            position: relative;
+            top: 0px;
+            /*word-break: break-all;*/
+        }
+
+        .buttonCard:hover {
+            background: linear-gradient(to bottom, #68a54b 5%, #74ad5a 100%);
+            background-color: #68a54b;
+        }
+
+        .buttonCard:active {
+            position: relative;
+            top: 1px;
+        }
+    </style>
+</head>
+<body>
+<!--<div th:if="${not #sets.isEmpty(orderList)}">-->
+<div>
+    </br>
+    <div class="underCard">
+        <div class="cardMain">
+            <div th:each="order:${orderFalseList}" class="card">
+                <form method="get" th:action="@{/closeOrder/{id}(id = ${order.getId()})}">
+                    <button class="buttonCard">
+                        <div style="width: 100%; display:table;">
+                            <!--                            <div th:text="${card.isCheck() ? 'M' : space}"-->
+                            <!--                                 style="display: table-cell; text-align: left; font-size: 10px;">-->
+                            <!--                            </div>-->
+                            <div th:text="${order.getDateOrder()}"
+                                 style="display: table-cell; text-align: center; font-size: 10px;">
+                            </div>
+                        </div>
+                        </br>
+                        <div style="width: 100%; display:table;">
+                            <a th:text="${'Заказ: ' + order.getId()}"></a>
+                        </div>
+                        <h1 th:text="${order.getDrink()}" style="font-size: 18px;"></h1>
+                        <div th:if="${order.getMilk() != null}" th:text="${'Молоко: ' + order.getMilk()}"
+                             style="font-size: 10px;"></div>
+                        <div th:if="${order.getSyrup() != null}" th:text="${'Сироп: ' + order.getSyrup()}"
+                             style="font-size: 10px; margin: 7px; font-weight: bold;"></div>
+                        <div th:if="${order.getDessert() != null}">
+                            </br>
+                            <div th:text="${order.getDessert()}"></div>
+                            <!--                            <div th:each="dessert:${order.getDessert()}">-->
+                            <!--                             <pre th:text="${dessert}"-->
+                            <!--                                  style="font-size: 10px; margin: 7px; font-weight: bold;">-->
+                            <!--                             </pre>-->
+                            <!--                            </div>-->
+                        </div>
+                        <br>
+                        <div th:text="${order.getPrice() + ' руб.'}"
+                             style="font-size: 10px; margin: 7px; font-weight: bold;"></div>
+                        <br>
+                        <div th:text="${order.isStatus()}"
+                             style="font-size: 10px; margin: 7px; font-weight: bold;"></div>
+                        <div th:if="${order.getComment() != null}">
+                            <a th:text="${'К: ' + order.getComment()}"></a>
+                        </div>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <br>
+    <hr>
+    <br>
+    <div style="display: table; margin: 0 auto;">
+        <table border="1" cellpadding="9" style="font-size:.9em">
+            <tr>
+                <th>Номер заказа</th>
+                <th>Напиток</th>
+                <th>Молоко</th>
+                <th>Сироп</th>
+                <th>Дополнительно</th>
+                <th>Дата заказа</th>
+                <th>Дата завершения</th>
+                <th>Цена</th>
+            </tr>
+            <tr th:each="orderTrue : ${orderTrueList}">
+                <td th:text="${orderTrue.getId()}"></td>
+                <td th:text="${orderTrue.getDrink()}"></td>
+                <td th:text="${orderTrue.getMilk()}"></td>
+                <td th:text="${orderTrue.getSyrup()}"></td>
+                <td th:text="${orderTrue.getDessert()}"></td>
+                <td th:text="${orderTrue.getDateOrder()}"></td>
+                <td th:text="${orderTrue.getDateReady()}"></td>
+                <td th:text="${orderTrue.getPrice()}"></td>
+            </tr>
+        </table>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,2 @@
+rootProject.name = 'coffee-rest'
+include 'client', 'server', 'common'

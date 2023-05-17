@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Index</title>
+    <style>
+
+        .menu {
+            margin: 10px;
+            color: whitesmoke;
+        }
+
+        .menupoint {
+            margin-left: 10px;
+            margin-right: 10px;
+        }
+
+        .posmenu {
+            margin-bottom: 5px;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        }
+
+        .parent {
+            background: #2b2b2b;
+            width: 100%;
+            height: 100%;
+            padding-top: 200px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            overflow: auto;
+        }
+
+        .block {
+            padding-top: 20px;
+            background: dimgray;
+            width: 400px;
+            position: absolute;
+            align-content: center;
+            left: 46%;
+            margin: -125px 0 0 -125px;
+        }
+
+        .option {
+            font-size: 12pt;
+            width: 200px;
+        }
+
+        .drinkMenu {
+            font-size: 12pt;
+            width: 80px;
+        }
+
+        .order {
+            margin-left: 20px;
+            margin-right: 20px;
+            padding: 10px;
+            background: cadetblue;
+        }
+
+        a {
+            text-align: right;
+        }
+
+        .makeOrder {
+            padding-left: 20px;
+            padding-right: 20px;
+            padding-bottom: 10px;
+        }
+
+    </style>
+</head>
+<body>
+<div class="parent">
+    <div class="block">
+        <div class="menu">
+            <div class="menupoint">
+                <!--                <a>Напиток:</a>-->
+                <!--                </br>-->
+                <div th:each="entry : ${coffeeDrinkHashMap}">
+                    <div class="posmenu">
+                        <div>
+                            <a th:text="${entry.key}"></a>
+                        </div>
+                        <div>
+                            <form th:each="drink : ${entry.value}" method="get"
+                                  th:action="@{/drink/{id}(id=${drink.getId()})}"
+                                  style="display: inline;">
+                                <input class="drinkMenu" type="submit" th:value="${drink.getPrice()}">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="menupoint">
+                <div th:each="entry : ${otherDrinkHashMap}">
+                    <div class="posmenu">
+                        <div>
+                            <a th:text="${entry.key}"></a>
+                        </div>
+                        <div>
+                            <form th:each="drink : ${entry.value}" method="get"
+                                  th:action="@{/drink/{id}(id=${drink.getId()})}" style="display: inline;">
+                                <input class="drinkMenu" type="submit" th:value="${drink.getPrice()}">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </br>
+            <div class="menupoint" th:if="${order.getDrink()?.isCoffee()}">
+                <a>Молоко:</a>
+                <div th:each="milk : ${milkList}">
+                    <!--                    <form method="post" action="/milk" style="display: inline;">-->
+                    <form method="get" th:action="@{/milk/{id}(id=${milk.getId()})}" style="display: inline;">
+                        <div class="posmenu">
+                            <div>
+                                <input class="option" type="submit" th:value="${milk.getName()}">
+                            </div>
+                            <div>
+                                <a th:text="${milk.getPrice()}"></a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                </br>
+            </div>
+            <div class="menupoint" th:if="${order.getDrink()?.isCoffee()}">
+                <a>Сироп:</a>
+                <div th:each="syrup : ${syrupList}">
+                    <form method="get" th:action="@{/syrup/{id}(id=${syrup.getId()})}" style="display: inline;">
+                        <div class="posmenu">
+                            <div>
+                                <input class="option" type="submit" th:value="${syrup.getName()}">
+                            </div>
+                            <div>
+                                <a th:text="${syrup.getPrice()}"></a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                </br>
+            </div>
+            <div class="menupoint" th:if="${not #lists.isEmpty(dessertList)}">
+                <a>Десерт:</a>
+                <div th:each="dessert : ${dessertList}">
+                    <form method="get" th:action="@{/dessert/{id}(id=${dessert.getId()})}" style="display: inline;">
+                        <div class="posmenu">
+                            <div>
+                                <input class="option" type="submit" th:value="${dessert.getName()}">
+                            </div>
+                            <div>
+                                <a th:text="${dessert.getPrice()}"></a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="order">
+            <div class="drink" th:if="${order.getDrink() != null}">
+                <a>Напиток:</a>
+                <a th:text="${order?.getDrink()?.getName()}"></a>
+                </br>
+            </div>
+
+            <div class="milk" th:if="${order.getMilk() != null}">
+                <a>Молоко:</a>
+                <a th:text="${order?.getMilk()?.getName()}"></a>
+                </br>
+            </div>
+
+            <div class="syrup" th:if="${order.getSyrup() != null}">
+                <a>Сироп:</a>
+                <a th:text="${order?.getSyrup?.getName()}"></a>
+                </br>
+            </div>
+            <div th:if="${not #lists.isEmpty(order?.getDesserts())}" class="dessert">
+                <a>Десерт:</a>
+                <div th:each="dessert : ${order.getDesserts()}">
+                    <a th:text="${dessert.getName()}"></a>
+                </div>
+            </div>
+            <br>
+            <div class="price">
+                <a>Цена:</a>
+                <a th:text="${order?.getPrice()}"></a>
+            </div>
+        </div>
+        <div class="makeOrder">
+            <form method="get" th:action="@{/newOrder}" style="display: inline; padding: 20px;">
+                <div>
+                    <input type="text" th:name="comment" id="comment" placeholder="Комментарий"
+                           style="width: -webkit-fill-available;">
+                </div>
+                <input type="submit" value="ЗАКАЗАТЬ" style="width: 100%; height: 100px; margin-top: 15px;">
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

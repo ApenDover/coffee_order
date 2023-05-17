@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Index</title>
+    <style>
+
+        .menu {
+            margin: 10px;
+        }
+
+        .menupoint {
+            margin-left: 10px;
+            margin-right: 10px;
+        }
+
+        .posmenu {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        }
+
+        .parent {
+            background: #2b2b2b;
+            width: 100%;
+            height: 100%;
+            padding-top: 200px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            overflow: auto;
+        }
+
+        .block {
+            background: antiquewhite;
+            width: 400px;
+            position: absolute;
+            align-content: center;
+            left: 50%;
+            margin: -125px 0 0 -125px;
+            padding: 20px;
+        }
+
+        .option {
+            font-size: 12pt;
+            width: 200px;
+        }
+
+        .drinkMenu {
+            font-size: 12pt;
+            width: 80px;
+        }
+
+        .order {
+            margin: 20px;
+            padding: 10px;
+            background: cadetblue;
+        }
+
+        a {
+            text-align: right;
+        }
+
+    </style>
+</head>
+<body>
+<div class="parent">
+    <div class="block">
+        <div>
+            <a th:text="${'Номер заказа: ' + orderID}"></a>
+        </div>
+        <div>
+            <div th:if="${order.getDrink() != null}">
+                <a th:text="${'Напиток: ' + order.getDrink().getName()}"></a>
+            </div>
+            <div th:if="${order.getMilk() != null}">
+                <a th:text="${'Молоко: ' + order.getMilk()?.getName()}"></a>
+            </div>
+            <div th:if="${order.getSyrup() != null}">
+                <a th:text="${'Сироп: ' + order.getSyrup()?.getName()}"></a>
+            </div>
+            <div th:if="${order.getDesserts() != null}">
+                <a>Десерты: </a>
+                <a th:each="dessert : ${order.getDesserts()}" th:text="${dessert.getName()}"></a>
+            </div>
+        </div>
+        <div>
+            <a th:text="${'К оплате: ' + order.getPrice()}"></a>
+            </br>
+            <a th:text="${'Комментарий: ' + order.getComment()}"></a>
+        </div>
+        <div>
+            <form action="http://localhost:8081">
+                <input type="submit" value="OK" />
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
