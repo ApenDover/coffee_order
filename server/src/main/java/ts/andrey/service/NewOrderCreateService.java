@@ -27,28 +27,18 @@ public class NewOrderCreateService {
     @Transactional
     public void makeTrue() {
         checkIt();
-        NewOrderCreate newOrderCreate = giveIt();
-        newOrderCreate.setUpdate(true);
-        newOrderCreate.setUpdateTime(new Date());
-        newOrderCreateRepository.save(newOrderCreate);
+        newOrderCreateRepository.save(giveIt().setUpdate(true).setUpdateTime(new Date()));
     }
 
     @Transactional
     public void makeFalse() {
         checkIt();
-        NewOrderCreate newOrderCreate = giveIt();
-        newOrderCreate.setUpdate(false);
-        newOrderCreate.setUpdateTime(new Date());
-        newOrderCreateRepository.save(newOrderCreate);
+        newOrderCreateRepository.save(giveIt().setUpdate(false).setUpdateTime(new Date()));
     }
 
     private void checkIt() {
         if (giveIt() == null) {
-            NewOrderCreate newOrderCreate = new NewOrderCreate();
-            newOrderCreate.setId(1);
-            newOrderCreate.setUpdate(false);
-            newOrderCreate.setUpdateTime(new Date());
-            newOrderCreateRepository.save(newOrderCreate);
+            newOrderCreateRepository.save(new NewOrderCreate().setId(1).setUpdateTime(new Date()).setUpdate(false));
         }
     }
 

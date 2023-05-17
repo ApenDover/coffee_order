@@ -25,8 +25,7 @@ public class SyrupService {
     }
 
     public Syrup findOne(int id) {
-        Optional<Syrup> foundSyrup = syrupRepository.findById(id);
-        return foundSyrup.orElse(null);
+        return syrupRepository.findById(id).orElse(null);
     }
 
     @Transactional

@@ -12,9 +12,6 @@ import java.util.Date;
 @Repository
 public interface OrderRepository extends JpaRepository<Ordering, Integer> {
 
-    @Query("SELECT COUNT(*) FROM Ordering WHERE status = false")
-    int getCount();
-
     @Modifying
     @Query("UPDATE Ordering SET status = :status, dateReady = :date WHERE id = :id")
     void update(

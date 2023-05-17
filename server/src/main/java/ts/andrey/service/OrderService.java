@@ -21,10 +21,6 @@ public class OrderService {
         return orderRepository.findAll();
     }
 
-    public int getCount() {
-        return orderRepository.getCount();
-    }
-
     public void update(boolean status, Date date, int id) {
         orderRepository.update(status, date, id);
     }
