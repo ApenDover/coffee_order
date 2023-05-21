@@ -1,4 +1,4 @@
-package ts.andrey.entity;
+package ts.andrey.common.data.entity;
 
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -22,7 +22,7 @@ import java.util.List;
 @Accessors(chain = true)
 @Entity
 @Table(name = "ordering")
-public class Ordering {
+public class Ordering implements Cloneable {
 
     @Id
     @Column(name = "id")
@@ -56,5 +56,10 @@ public class Ordering {
     private Date dateReady;
 
     private String comment;
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
 
 }

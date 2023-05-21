@@ -6,16 +6,17 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
+import ts.andrey.common.data.entity.Dessert;
+import ts.andrey.common.data.entity.Drink;
+import ts.andrey.common.data.entity.Milk;
+import ts.andrey.common.data.entity.NewOrderCreate;
+import ts.andrey.common.data.entity.Ordering;
+import ts.andrey.common.data.entity.Syrup;
 import ts.andrey.constants.CoffeeRestConst;
-import ts.andrey.dto.InOrderingDTO;
-import ts.andrey.dto.OrderingDTO;
-import ts.andrey.mapper.OrderingToOrderDtoMapper;
-import ts.andrey.models.Dessert;
-import ts.andrey.models.Drink;
-import ts.andrey.models.Milk;
-import ts.andrey.models.NewOrderCreate;
-import ts.andrey.models.Ordering;
-import ts.andrey.models.Syrup;
+import ts.andrey.common.dto.InOutOrderingDTO;
+import ts.andrey.common.dto.OrderingDTO;
+import ts.andrey.dto.InOutOrderingDTOView;
+import ts.andrey.mapper.OrderingToOrderingDtoMapper;
 import ts.andrey.service.GetApi;
 
 import java.util.ArrayList;
@@ -41,9 +42,9 @@ public class MainController {
     private final HashMap<String, TreeSet<Drink>> otherDrinkHashMap;
     private final HashMap<String, TreeSet<Drink>> coffeeDrinkHashMap;
     private final ArrayList<Milk> milkArrayList;
-    private final ArrayList<InOrderingDTO> orderingArrayList;
-    private final ArrayList<InOrderingDTO> orderingTrueArrayList;
-    private final ArrayList<InOrderingDTO> orderingFalseArrayList;
+    private final ArrayList<InOutOrderingDTOView> orderingArrayList;
+    private final ArrayList<InOutOrderingDTOView> orderingTrueArrayList;
+    private final ArrayList<InOutOrderingDTOView> orderingFalseArrayList;
     private final Ordering ordering = new Ordering();
     private final List<Dessert> dessertList;
 
@@ -94,7 +95,7 @@ public class MainController {
     public String newOrder(Model model, @RequestParam("comment") String comment) throws CloneNotSupportedException {
         ordering.setComment(comment);
         model.addAttribute("orderID", getApi.sendOrder(CoffeeRestConst.getNewOrderEndPoint(),
-                OrderingToOrderDtoMapper.INSTANCE.toOrderingDTO(ordering)));
+                OrderingToOrderingDtoMapper.INSTANCE.toOrderingDTO(ordering)));
         model.addAttribute("order", ordering.clone());
         return "orderCreate";
     }
@@ -232,8 +233,8 @@ public class MainController {
         orderingArrayList.clear();
         orderingTrueArrayList.clear();
         orderingFalseArrayList.clear();
-        orderingArrayList.addAll(getApi.getObjectList(CoffeeRestConst.getAllOrderEndPoint(), InOrderingDTO[].class));
-        for (InOrderingDTO orderingDTO : orderingArrayList) {
+        orderingArrayList.addAll(getApi.getObjectList(CoffeeRestConst.getAllOrderEndPoint(), InOutOrderingDTOView[].class));
+        for (InOutOrderingDTOView orderingDTO : orderingArrayList) {
             if (orderingDTO.isStatus()) {
                 orderingTrueArrayList.add(orderingDTO);
             } else {

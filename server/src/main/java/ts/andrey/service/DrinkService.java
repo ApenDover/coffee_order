@@ -3,7 +3,7 @@ package ts.andrey.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ts.andrey.entity.Drink;
+import ts.andrey.common.data.entity.Drink;
 import ts.andrey.repositories.DrinkRepository;
 
 import javax.transaction.Transactional;

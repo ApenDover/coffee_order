@@ -9,14 +9,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ts.andrey.dto.OrderingDTO;
-import ts.andrey.dto.OutOrderingDTO;
-import ts.andrey.entity.Dessert;
-import ts.andrey.entity.Drink;
-import ts.andrey.entity.Milk;
-import ts.andrey.entity.NewOrderCreate;
-import ts.andrey.entity.Ordering;
-import ts.andrey.entity.Syrup;
+import ts.andrey.common.dto.OrderingDTO;
+import ts.andrey.common.dto.InOutOrderingDTO;
+import ts.andrey.common.data.entity.Dessert;
+import ts.andrey.common.data.entity.Drink;
+import ts.andrey.common.data.entity.Milk;
+import ts.andrey.common.data.entity.NewOrderCreate;
+import ts.andrey.common.data.entity.Ordering;
+import ts.andrey.common.data.entity.Syrup;
 import ts.andrey.mapper.OrderingDtoToOrderingMapper;
 import ts.andrey.mapper.OrderingToOutOrderingDtoMapper;
 import ts.andrey.service.DessertService;
@@ -44,7 +44,7 @@ public class ServerController {
     private final NewOrderCreateService newOrderCreateService;
 
     @GetMapping("/getAllOrders")
-    public List<OutOrderingDTO> getAllOrders() {
+    public List<InOutOrderingDTO> getAllOrders() {
         return orderService.findAll().stream().map(OrderingToOutOrderingDtoMapper.INSTANCE::mapToDto).collect(Collectors.toList());
     }
 

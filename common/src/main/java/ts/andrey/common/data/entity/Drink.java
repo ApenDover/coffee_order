@@ -1,4 +1,4 @@
-package ts.andrey.entity;
+package ts.andrey.common.data.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
@@ -15,12 +15,13 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import java.util.List;
+import java.util.Objects;
 
 @Data
 @Accessors(chain = true)
 @Entity
 @Table(name = "drink")
-public class Drink {
+public class Drink implements Comparable<Drink> {
 
     @Id
     @Column(name = "id")
@@ -41,4 +42,21 @@ public class Drink {
 
     private boolean coffee;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Drink)) return false;
+        Drink drink = (Drink) o;
+        return getId() == drink.getId();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
+    }
+
+    @Override
+    public int compareTo(Drink o) {
+        return Integer.compare(this.id, o.getId());
+    }
 }

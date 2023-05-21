@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import ts.andrey.entity.Ordering;
+import ts.andrey.common.data.entity.Ordering;
 
 import java.util.Date;
 

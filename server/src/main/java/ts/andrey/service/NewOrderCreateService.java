@@ -2,7 +2,7 @@ package ts.andrey.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ts.andrey.entity.NewOrderCreate;
+import ts.andrey.common.data.entity.NewOrderCreate;
 import ts.andrey.repositories.NewOrderCreateRepository;
 
 import javax.transaction.Transactional;

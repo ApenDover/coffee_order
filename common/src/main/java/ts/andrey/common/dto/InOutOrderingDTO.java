@@ -1,13 +1,14 @@
-package ts.andrey.dto;
+package ts.andrey.common.dto;
 
 import lombok.Data;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
 @Data
-public class OutOrderingDTO {
+public class InOutOrderingDTO implements Comparable<InOutOrderingDTO> {
 
     private int id;
     private String drink;
@@ -25,16 +26,21 @@ public class OutOrderingDTO {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof OutOrderingDTO)) {
+        if (!(o instanceof InOutOrderingDTO)) {
             return false;
         }
-        OutOrderingDTO that = (OutOrderingDTO) o;
+        InOutOrderingDTO that = (InOutOrderingDTO) o;
         return getId() == that.getId();
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(getId());
+    }
+
+    @Override
+    public int compareTo(InOutOrderingDTO o) {
+        return Integer.compare(this.id, o.getId());
     }
 
 }

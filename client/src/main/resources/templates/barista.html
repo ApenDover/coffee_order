@@ -91,7 +91,7 @@
                             <!--                            <div th:text="${card.isCheck() ? 'M' : space}"-->
                             <!--                                 style="display: table-cell; text-align: left; font-size: 10px;">-->
                             <!--                            </div>-->
-                            <div th:text="${order.getDateOrder()}"
+                            <div th:text="${order.giveDateOrder()}"
                                  style="display: table-cell; text-align: center; font-size: 10px;">
                             </div>
                         </div>
@@ -106,7 +106,7 @@
                              style="font-size: 10px; margin: 7px; font-weight: bold;"></div>
                         <div th:if="${order.getDessert() != null}">
                             </br>
-                            <div th:text="${order.getDessert()}"></div>
+                            <div th:text="${order.giveDessert()}"></div>
                             <!--                            <div th:each="dessert:${order.getDessert()}">-->
                             <!--                             <pre th:text="${dessert}"-->
                             <!--                                  style="font-size: 10px; margin: 7px; font-weight: bold;">-->
@@ -147,9 +147,9 @@
                 <td th:text="${orderTrue.getDrink()}"></td>
                 <td th:text="${orderTrue.getMilk()}"></td>
                 <td th:text="${orderTrue.getSyrup()}"></td>
-                <td th:text="${orderTrue.getDessert()}"></td>
-                <td th:text="${orderTrue.getDateOrder()}"></td>
-                <td th:text="${orderTrue.getDateReady()}"></td>
+                <td th:text="${orderTrue.giveDessert()}"></td>
+                <td th:text="${orderTrue.giveDateOrder()}"></td>
+                <td th:text="${orderTrue.giveDateReady()}"></td>
                 <td th:text="${orderTrue.getPrice()}"></td>
             </tr>
         </table>

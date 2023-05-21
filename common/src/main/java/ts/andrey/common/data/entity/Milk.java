@@ -1,4 +1,4 @@
-package ts.andrey.entity;
+package ts.andrey.common.data.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
@@ -7,6 +7,7 @@ import lombok.experimental.Accessors;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -18,13 +19,13 @@ import java.util.List;
 @Data
 @Accessors(chain = true)
 @Entity
-@Table(name = "syrup")
-public class Syrup {
+@Table(name = "milk")
+public class Milk {
 
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "syrupSequence")
-    @SequenceGenerator(name = "syrupSequence", sequenceName = "seq_syrup_id", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "milkSequence")
+    @SequenceGenerator(name = "milkSequence", sequenceName = "seq_milk_id", allocationSize = 1)
     private int id;
 
     private String name;
@@ -33,7 +34,7 @@ public class Syrup {
 
     @ToString.Exclude
     @JsonIgnore
-    @OneToMany(mappedBy = "syrup")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "milk")
     private List<Ordering> ordering;
 
 }

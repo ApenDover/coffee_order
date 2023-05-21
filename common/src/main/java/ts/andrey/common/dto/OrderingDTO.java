@@ -1,4 +1,4 @@
-package ts.andrey.dto;
+package ts.andrey.common.dto;
 
 import lombok.Data;
 import lombok.experimental.Accessors;

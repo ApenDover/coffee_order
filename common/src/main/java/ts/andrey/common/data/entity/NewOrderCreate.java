@@ -1,4 +1,4 @@
-package ts.andrey.entity;
+package ts.andrey.common.data.entity;
 
 import lombok.Data;
 import lombok.experimental.Accessors;

@@ -81,7 +81,8 @@
             </div>
             <div th:if="${order.getDesserts() != null}">
                 <a>Десерты: </a>
-                <a th:each="dessert : ${order.getDesserts()}" th:text="${dessert.getName()}"></a>
+<!--                <a th:text="${order.getDesserts()}"></a>-->
+                <a th:each="dessert : ${order.getDesserts()}" th:text="${dessert.getName() + ' '}"></a>
             </div>
         </div>
         <div>

@@ -4,9 +4,9 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 import org.mapstruct.factory.Mappers;
-import ts.andrey.dto.OutOrderingDTO;
-import ts.andrey.entity.Dessert;
-import ts.andrey.entity.Ordering;
+import ts.andrey.common.dto.InOutOrderingDTO;
+import ts.andrey.common.data.entity.Dessert;
+import ts.andrey.common.data.entity.Ordering;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +21,7 @@ public interface OrderingToOutOrderingDtoMapper {
     @Mapping(source = "syrup.name", target = "syrup")
     @Mapping(source = "date", target = "dateOrder")
     @Mapping(source = "desserts", target = "dessert", qualifiedByName = "getDessertNames")
-    OutOrderingDTO mapToDto(Ordering ordering);
+    InOutOrderingDTO mapToDto(Ordering ordering);
 
     @Named("getDessertNames")
     default List<String> getDessertNames(List<Dessert> desserts) {

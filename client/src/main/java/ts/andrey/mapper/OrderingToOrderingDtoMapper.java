@@ -4,16 +4,17 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 import org.mapstruct.factory.Mappers;
-import ts.andrey.dto.OrderingDTO;
-import ts.andrey.models.Dessert;
-import ts.andrey.models.Ordering;
+import ts.andrey.common.data.entity.Dessert;
+import ts.andrey.common.data.entity.Ordering;
+import ts.andrey.common.dto.OrderingDTO;
+
 
 import java.util.List;
 
 @Mapper(componentModel = "spring")
-public interface OrderingToOrderDtoMapper {
+public interface OrderingToOrderingDtoMapper {
 
-    OrderingToOrderDtoMapper INSTANCE = Mappers.getMapper(OrderingToOrderDtoMapper.class);
+    OrderingToOrderingDtoMapper INSTANCE = Mappers.getMapper(OrderingToOrderingDtoMapper.class);
 
     @Mapping(source = "id", target = "orderId")
     @Mapping(source = "milk.id", target = "milkId")

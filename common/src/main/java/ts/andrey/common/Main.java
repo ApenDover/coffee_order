@@ -1,4 +1,4 @@
-package ts.andrey;
+package ts.andrey.common;
 
 import lombok.AllArgsConstructor;
 
