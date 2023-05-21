@@ -2,7 +2,6 @@ package ts.andrey.common.dto;
 
 import lombok.Data;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;

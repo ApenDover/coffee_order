@@ -44,8 +44,12 @@ public class Drink implements Comparable<Drink> {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Drink)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Drink)) {
+            return false;
+        }
         Drink drink = (Drink) o;
         return getId() == drink.getId();
     }
@@ -59,4 +63,5 @@ public class Drink implements Comparable<Drink> {
     public int compareTo(Drink o) {
         return Integer.compare(this.id, o.getId());
     }
+
 }

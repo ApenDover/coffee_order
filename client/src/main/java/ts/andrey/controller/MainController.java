@@ -13,7 +13,6 @@ import ts.andrey.common.data.entity.NewOrderCreate;
 import ts.andrey.common.data.entity.Ordering;
 import ts.andrey.common.data.entity.Syrup;
 import ts.andrey.constants.CoffeeRestConst;
-import ts.andrey.common.dto.InOutOrderingDTO;
 import ts.andrey.common.dto.OrderingDTO;
 import ts.andrey.dto.InOutOrderingDTOView;
 import ts.andrey.mapper.OrderingToOrderingDtoMapper;
