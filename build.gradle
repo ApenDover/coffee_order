@@ -11,6 +11,20 @@ allprojects {
     }
 }
 
+group = 'ts.andrey'
+
+jar {
+    enabled = false
+}
+
+tasks.build {
+    enabled = false
+}
+
+bootJar {
+    enabled = false
+}
+
 subprojects {
 
     apply plugin: 'java'
@@ -54,21 +68,39 @@ subprojects {
 
 project("server") {
 
+    sourceCompatibility = '11'
+
+    bootJar {
+        launchScript()
+    }
+
     dependencies {
         implementation project(':common')
         runtimeOnly 'org.postgresql:postgresql:42.6.0'
-
     }
 
 }
 
 project("client") {
 
+    sourceCompatibility = '11'
+
+    bootJar {
+        launchScript()
+    }
+
     dependencies {
         implementation project(':common')
         implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     }
 
+}
+
+project("common") {
+
+    bootJar {
+        enabled = false
+    }
 }
 
 

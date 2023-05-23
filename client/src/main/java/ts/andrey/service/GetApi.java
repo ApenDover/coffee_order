@@ -26,16 +26,16 @@ public class GetApi extends AbstractClientService {
     }
 
     public <T> List<T> getObjectList(String url, Class<T[]> clazz) {
-        String result = null;
-        T[] objArray = null;
-
+        final String result;
+        final T[] objArray;
         try {
             result = GetRequest.getHTML(url);
             objArray = OBJECT_MAPPER.readValue(result, clazz);
+            return List.of(objArray);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        return List.of(objArray);
+
     }
 
 }

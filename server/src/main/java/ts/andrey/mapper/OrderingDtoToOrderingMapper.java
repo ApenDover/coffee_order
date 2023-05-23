@@ -41,7 +41,7 @@ public interface OrderingDtoToOrderingMapper {
     @Named("IntegerArrayToListDessert")
     default List<Dessert> toIntegerArray(Integer[] desserts, @Context DessertService dessertService) {
         if (desserts == null) {
-            return null;
+            return Collections.emptyList();
         }
         return Arrays.stream(desserts).map(dessertService::findOne).collect(Collectors.toList());
     }

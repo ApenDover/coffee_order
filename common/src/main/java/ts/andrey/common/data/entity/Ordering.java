@@ -11,10 +11,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -42,7 +44,11 @@ public class Ordering implements Cloneable {
     @JoinColumn(name = "syrup_id", referencedColumnName = "id")
     private Syrup syrup;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "orders")
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "dessert_order",
+            joinColumns = @JoinColumn(name = "order_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "dessert_id", referencedColumnName = "id"))
     private List<Dessert> desserts;
 
     private int price;
@@ -58,8 +64,21 @@ public class Ordering implements Cloneable {
     private String comment;
 
     @Override
-    public Object clone() throws CloneNotSupportedException {
-        return super.clone();
+    public Ordering clone() throws CloneNotSupportedException {
+        return (Ordering) super.clone();
+    }
+
+    public void clear() {
+        this.id = 0;
+        this.drink = new Drink();
+        this.milk = new Milk();
+        this.syrup = new Syrup();
+        this.desserts = new ArrayList<>();
+        this.price = 0;
+        this.status = false;
+        this.date = new Date();
+        this.dateReady = new Date();
+        this.comment = "";
     }
 
 }

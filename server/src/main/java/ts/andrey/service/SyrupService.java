@@ -12,7 +12,7 @@ import java.util.List;
 @Transactional
 public class SyrupService {
 
-    private final SyrupRepository syrupRepository;
+    private final transient SyrupRepository syrupRepository;
 
     @Autowired
     public SyrupService(SyrupRepository syrupRepository) {

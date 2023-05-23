@@ -1,11 +1,15 @@
 package ts.andrey.constants;
 
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
+
 @Component
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public final class CoffeeRestConst {
 
     @Getter
@@ -35,8 +39,11 @@ public final class CoffeeRestConst {
     @Getter
     private static String makeUpdateFalseEndPoint;
 
-    @Autowired
-    private CoffeeRestConst(@Value("${serverAddress}") String url) {
+    @Value("${serverAddress}")
+    private String url;
+
+    @PostConstruct
+    private void init() {
         allMilkEndPoint = url + "/api/getAllMilk";
         allSyrupEndPoint = url + "/api/getAllSyrup";
         allDesertsEndPoint = url + "/api/getAllDessert";

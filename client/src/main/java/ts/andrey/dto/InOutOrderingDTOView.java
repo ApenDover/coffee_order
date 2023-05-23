@@ -3,10 +3,11 @@ package ts.andrey.dto;
 import ts.andrey.common.dto.InOutOrderingDTO;
 
 import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 public class InOutOrderingDTOView extends InOutOrderingDTO {
 
-    private static final SimpleDateFormat FORMATTER = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private static final SimpleDateFormat FORMATTER = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
 
     public String giveDessert() {
         if (super.getDessert().isEmpty()) {

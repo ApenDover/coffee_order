@@ -8,7 +8,6 @@ import ts.andrey.common.data.entity.Dessert;
 import ts.andrey.common.data.entity.Ordering;
 import ts.andrey.common.dto.OrderingDTO;
 
-
 import java.util.List;
 
 @Mapper(componentModel = "spring")
@@ -26,13 +25,11 @@ public interface OrderingToOrderingDtoMapper {
     @Named("ToIntegerArray")
     default Integer[] toIntegerArray(List<Dessert> desserts) {
         if (desserts == null) {
-            return null;
+            return new Integer[0];
         }
-        Integer[] arr = new Integer[desserts.size()];
-        for (int i = 0; i < desserts.size(); i++) {
-            arr[i] = desserts.get(i).getId();
-        }
-        return arr;
+        return desserts.stream()
+                .map(Dessert::getId)
+                .toArray(Integer[]::new);
     }
 
 }

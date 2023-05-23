@@ -47,6 +47,8 @@ public class MainController {
     private final Ordering ordering = new Ordering();
     private final List<Dessert> dessertList;
 
+    private static final String REDIRECT_HOME = "redirect:/";
+
     @GetMapping("/")
     public String index(Model model) {
 
@@ -96,6 +98,7 @@ public class MainController {
         model.addAttribute("orderID", getApi.sendOrder(CoffeeRestConst.getNewOrderEndPoint(),
                 OrderingToOrderingDtoMapper.INSTANCE.toOrderingDTO(ordering)));
         model.addAttribute("order", ordering.clone());
+        ordering.clear();
         return "orderCreate";
     }
 
@@ -108,13 +111,13 @@ public class MainController {
     @GetMapping("/milk/{id}")
     public String setMilk(@PathVariable("id") int id) {
 
-        Milk milk = milkArrayList.stream().filter(milk1 -> milk1.getId() == id).findFirst().get();
+        final var milk = milkArrayList.stream().filter(milk1 -> milk1.getId() == id).findFirst().orElse(new Milk());
         if (ordering.getMilk() == null) {
             ordering.setMilk(milk);
             int price = ordering.getPrice();
             ordering.setPrice(price + milk.getPrice());
         } else {
-            Milk beforeMilk = ordering.getMilk();
+            final var beforeMilk = ordering.getMilk();
             int price = ordering.getPrice();
             if (beforeMilk.equals(milk)) {
                 ordering.setPrice(price - ordering.getMilk().getPrice());
@@ -124,19 +127,19 @@ public class MainController {
                 ordering.setMilk(milk);
             }
         }
-        return "redirect:/";
+        return REDIRECT_HOME;
     }
 
     @GetMapping("/syrup/{id}")
     public String setSyrup(@PathVariable("id") int id) {
 
-        Syrup syrup = syrupArrayList.stream().filter(syrup1 -> syrup1.getId() == id).findFirst().get();
+        final var syrup = syrupArrayList.stream().filter(syrup1 -> syrup1.getId() == id).findFirst().orElse(new Syrup());
         if (ordering.getSyrup() == null) {
             ordering.setSyrup(syrup);
             int price = ordering.getPrice();
             ordering.setPrice(price + syrup.getPrice());
         } else {
-            Syrup beforeSyrup = ordering.getSyrup();
+            final var beforeSyrup = ordering.getSyrup();
             int price = ordering.getPrice();
             if (beforeSyrup.equals(syrup)) {
                 ordering.setPrice(price - ordering.getSyrup().getPrice());
@@ -146,19 +149,19 @@ public class MainController {
                 ordering.setSyrup(syrup);
             }
         }
-        return "redirect:/";
+        return REDIRECT_HOME;
     }
 
     @GetMapping("/drink/{id}")
     public String setDrink(@PathVariable("id") int id) {
-        Drink drink = drinkArrayList.stream().filter(drink1 -> drink1.getId() == id).findFirst().get();
+        Drink drink = drinkArrayList.stream().filter(drink1 -> drink1.getId() == id).findFirst().orElse(new Drink());
         if (ordering.getDrink() == null) {
             ordering.setDrink(drink);
             int price = ordering.getPrice();
             ordering.setPrice(price + drink.getPrice());
         } else {
             int price = ordering.getPrice();
-            Drink beforeDrink = ordering.getDrink();
+            final var beforeDrink = ordering.getDrink();
             if (beforeDrink.equals(drink)) {
                 ordering.setPrice(price - ordering.getDrink().getPrice());
                 ordering.setDrink(null);
@@ -167,12 +170,12 @@ public class MainController {
                 ordering.setDrink(drink);
             }
         }
-        return "redirect:/";
+        return REDIRECT_HOME;
     }
 
     @GetMapping("/dessert/{id}")
     public String setDessert(@PathVariable("id") int id) {
-        Dessert dessert = dessertArrayList.stream().filter(dessert1 -> dessert1.getId() == id).findFirst().get();
+        final var dessert = dessertArrayList.stream().filter(dessert1 -> dessert1.getId() == id).findFirst().orElse(new Dessert());
         if (dessertList.contains(dessert)) {
             dessertList.remove(dessert);
             int price = ordering.getPrice();
@@ -183,7 +186,7 @@ public class MainController {
             ordering.setPrice(price + dessert.getPrice());
         }
         ordering.setDesserts(dessertList);
-        return "redirect:/";
+        return REDIRECT_HOME;
     }
 
     private void updateData() {
