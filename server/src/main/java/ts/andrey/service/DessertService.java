@@ -3,10 +3,10 @@ package ts.andrey.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ts.andrey.common.data.entity.Dessert;
 import ts.andrey.repositories.DessertRepository;
 
-import javax.transaction.Transactional;
 import java.util.List;
 
 @Service

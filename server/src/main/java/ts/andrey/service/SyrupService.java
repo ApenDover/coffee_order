@@ -2,10 +2,10 @@ package ts.andrey.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ts.andrey.common.data.entity.Syrup;
 import ts.andrey.repositories.SyrupRepository;
 
-import javax.transaction.Transactional;
 import java.util.List;
 
 @Service

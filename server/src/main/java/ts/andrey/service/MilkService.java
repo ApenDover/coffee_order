@@ -2,10 +2,10 @@ package ts.andrey.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ts.andrey.common.data.entity.Milk;
 import ts.andrey.repositories.MilkRepository;
 
-import javax.transaction.Transactional;
 import java.util.List;
 
 @Service

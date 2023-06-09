@@ -2,10 +2,10 @@ package ts.andrey.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ts.andrey.common.data.entity.NewOrderCreate;
 import ts.andrey.repositories.NewOrderCreateRepository;
 
-import javax.transaction.Transactional;
 import java.util.Date;
 
 @Service
