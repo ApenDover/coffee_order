@@ -10,14 +10,23 @@ import java.util.Objects;
 public class InOutOrderingDTO implements Comparable<InOutOrderingDTO> {
 
     private int id;
+
     private String drink;
+
     private String milk;
+
     private String syrup;
+
     private List<String> dessert;
+
     private int price;
+
     private boolean status;
+
     private Date dateOrder;
+
     private Date dateReady;
+
     private String comment;
 
     @Override

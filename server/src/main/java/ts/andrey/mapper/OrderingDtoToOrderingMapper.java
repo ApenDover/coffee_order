@@ -6,7 +6,6 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.Named;
-import org.mapstruct.factory.Mappers;
 import ts.andrey.common.dto.OrderingDTO;
 import ts.andrey.common.data.entity.Dessert;
 import ts.andrey.common.data.entity.Ordering;
@@ -24,8 +23,6 @@ import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring", uses = {DessertService.class, MilkService.class, SyrupService.class, DrinkService.class})
 public interface OrderingDtoToOrderingMapper {
-
-    OrderingDtoToOrderingMapper INSTANCE = Mappers.getMapper(OrderingDtoToOrderingMapper.class);
 
     @Mapping(target = "id", source = "orderId")
     @Mapping(target = "milk", source = "milkId")
@@ -50,6 +47,7 @@ public interface OrderingDtoToOrderingMapper {
     @AfterMapping
     default void countPrice(@MappingTarget Ordering ordering) {
         int price = 0;
+
         if (ordering.getDrink() != null) {
             price += ordering.getDrink().getPrice();
         }
@@ -69,10 +67,6 @@ public interface OrderingDtoToOrderingMapper {
         }
         ordering.setPrice(price);
         ordering.setDate(new Date());
-    }
-
-    private void updateReady(Ordering ordering) {
-        ordering.setDateReady(new Date());
     }
 
 }

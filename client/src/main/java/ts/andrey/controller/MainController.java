@@ -18,11 +18,11 @@ import ts.andrey.dto.InOutOrderingDTOView;
 import ts.andrey.mapper.OrderingToOrderingDtoMapper;
 import ts.andrey.service.GetApi;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 
@@ -31,19 +31,37 @@ import java.util.stream.Collectors;
 public class MainController {
 
     private final GetApi getApi;
+
+    private final CoffeeRestConst coffeeRestConst;
+
+    private final OrderingToOrderingDtoMapper mapper;
+
     private final List<Syrup> syrupArrayList;
-    private final ArrayList<Dessert> dessertArrayList;
-    private final ArrayList<Drink> drinkArrayList;
-    private final ArrayList<Drink> coffeeDrinkArrayList;
-    private final ArrayList<Drink> otherDrinkArrayList;
-    private final TreeSet<String> coffeeName;
-    private final TreeSet<String> otherDrinkName;
+
+    private final List<Dessert> dessertArrayList;
+
+    private final List<Drink> drinkArrayList;
+
+    private final List<Drink> coffeeDrinkArrayList;
+
+    private final List<Drink> otherDrinkArrayList;
+
+    private final List<Milk> milkArrayList;
+
+    private final List<InOutOrderingDTOView> orderingArrayList;
+
+    private final List<InOutOrderingDTOView> orderingTrueArrayList;
+
+    private final List<InOutOrderingDTOView> orderingFalseArrayList;
+
+    private final Set<String> coffeeName;
+
+    private final Set<String> otherDrinkName;
+
     private final HashMap<String, TreeSet<Drink>> otherDrinkHashMap;
+
     private final HashMap<String, TreeSet<Drink>> coffeeDrinkHashMap;
-    private final ArrayList<Milk> milkArrayList;
-    private final ArrayList<InOutOrderingDTOView> orderingArrayList;
-    private final ArrayList<InOutOrderingDTOView> orderingTrueArrayList;
-    private final ArrayList<InOutOrderingDTOView> orderingFalseArrayList;
+
     private final Ordering ordering = new Ordering();
     private final List<Dessert> dessertList;
 
@@ -71,10 +89,10 @@ public class MainController {
         if (orderingArrayList.isEmpty()) {
             loadData();
         } else {
-            NewOrderCreate newOrderCreate = getApi.getObjectList(CoffeeRestConst.getUpdateInfoEndPoint(), NewOrderCreate[].class).get(0);
+            NewOrderCreate newOrderCreate = getApi.getObjectList(coffeeRestConst.getUpdateInfoEndPoint(), NewOrderCreate[].class).get(0);
             if (newOrderCreate.isUpdate()) {
                 loadData();
-                getApi.getObjectList(CoffeeRestConst.getMakeUpdateFalseEndPoint(), String[].class);
+                getApi.getObjectList(coffeeRestConst.getMakeUpdateFalseEndPoint(), String[].class);
             }
         }
 
@@ -95,8 +113,8 @@ public class MainController {
     @GetMapping("/newOrder")
     public String newOrder(Model model, @RequestParam("comment") String comment) throws CloneNotSupportedException {
         ordering.setComment(comment);
-        model.addAttribute("orderID", getApi.sendOrder(CoffeeRestConst.getNewOrderEndPoint(),
-                OrderingToOrderingDtoMapper.INSTANCE.toOrderingDTO(ordering)));
+        model.addAttribute("orderID", getApi.sendOrder(coffeeRestConst.getNewOrderEndPoint(),
+                mapper.toOrderingDTO(ordering)));
         model.addAttribute("order", ordering.clone());
         ordering.clear();
         return "orderCreate";
@@ -104,7 +122,7 @@ public class MainController {
 
     @GetMapping("/closeOrder/{id}")
     public String updateOrder(@PathVariable("id") int id) {
-        getApi.sendOrder(CoffeeRestConst.getCloseOrderEndPoint(), new OrderingDTO().setOrderId(id));
+        getApi.sendOrder(coffeeRestConst.getCloseOrderEndPoint(), new OrderingDTO().setOrderId(id));
         return "redirect:/barista";
     }
 
@@ -191,10 +209,10 @@ public class MainController {
 
     private void updateData() {
         try {
-            syrupArrayList.addAll(getApi.getObjectList(CoffeeRestConst.getAllSyrupEndPoint(), Syrup[].class));
-            dessertArrayList.addAll(getApi.getObjectList(CoffeeRestConst.getAllDesertsEndPoint(), Dessert[].class));
-            drinkArrayList.addAll(getApi.getObjectList(CoffeeRestConst.getAllDrinkEndPoint(), Drink[].class));
-            milkArrayList.addAll(getApi.getObjectList(CoffeeRestConst.getAllMilkEndPoint(), Milk[].class));
+            syrupArrayList.addAll(getApi.getObjectList(coffeeRestConst.getAllSyrupEndPoint(), Syrup[].class));
+            dessertArrayList.addAll(getApi.getObjectList(coffeeRestConst.getAllDesertsEndPoint(), Dessert[].class));
+            drinkArrayList.addAll(getApi.getObjectList(coffeeRestConst.getAllDrinkEndPoint(), Drink[].class));
+            milkArrayList.addAll(getApi.getObjectList(coffeeRestConst.getAllMilkEndPoint(), Milk[].class));
             coffeeDrinkArrayList.addAll(drinkArrayList.stream().filter(Drink::isCoffee).collect(Collectors.toList()));
             otherDrinkArrayList.addAll(drinkArrayList);
             otherDrinkArrayList.removeAll(coffeeDrinkArrayList);
@@ -235,7 +253,7 @@ public class MainController {
         orderingArrayList.clear();
         orderingTrueArrayList.clear();
         orderingFalseArrayList.clear();
-        orderingArrayList.addAll(getApi.getObjectList(CoffeeRestConst.getAllOrderEndPoint(), InOutOrderingDTOView[].class));
+        orderingArrayList.addAll(getApi.getObjectList(coffeeRestConst.getAllOrderEndPoint(), InOutOrderingDTOView[].class));
         for (InOutOrderingDTOView orderingDTO : orderingArrayList) {
             if (orderingDTO.isStatus()) {
                 orderingTrueArrayList.add(orderingDTO);

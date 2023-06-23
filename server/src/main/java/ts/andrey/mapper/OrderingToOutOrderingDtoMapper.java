@@ -3,7 +3,6 @@ package ts.andrey.mapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
-import org.mapstruct.factory.Mappers;
 import ts.andrey.common.dto.InOutOrderingDTO;
 import ts.andrey.common.data.entity.Dessert;
 import ts.andrey.common.data.entity.Ordering;
@@ -13,8 +12,6 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface OrderingToOutOrderingDtoMapper {
-
-    OrderingToOutOrderingDtoMapper INSTANCE = Mappers.getMapper(OrderingToOutOrderingDtoMapper.class);
 
     @Mapping(source = "drink.name", target = "drink")
     @Mapping(source = "milk.name", target = "milk")

@@ -9,35 +9,27 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 
 @Component
+@Getter
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public final class CoffeeRestConst {
 
-    @Getter
-    private static String closeOrderEndPoint;
+    private String closeOrderEndPoint;
 
-    @Getter
-    private static String allMilkEndPoint;
+    private String allMilkEndPoint;
 
-    @Getter
-    private static String allSyrupEndPoint;
+    private String allSyrupEndPoint;
 
-    @Getter
-    private static String allDesertsEndPoint;
+    private String allDesertsEndPoint;
 
-    @Getter
-    private static String allDrinkEndPoint;
+    private String allDrinkEndPoint;
 
-    @Getter
-    private static String allOrderEndPoint;
+    private String allOrderEndPoint;
 
-    @Getter
-    private static String newOrderEndPoint;
+    private String newOrderEndPoint;
 
-    @Getter
-    private static String updateInfoEndPoint;
+    private String updateInfoEndPoint;
 
-    @Getter
-    private static String makeUpdateFalseEndPoint;
+    private String makeUpdateFalseEndPoint;
 
     @Value("${serverAddress}")
     private String url;

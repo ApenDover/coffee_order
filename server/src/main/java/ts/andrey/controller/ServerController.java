@@ -37,15 +37,24 @@ import java.util.stream.Collectors;
 public class ServerController {
 
     private final OrderService orderService;
+
     private final DrinkService drinkService;
+
     private final MilkService milkService;
+
     private final SyrupService syrupService;
+
     private final DessertService dessertService;
+
     private final NewOrderCreateService newOrderCreateService;
+
+    private final OrderingDtoToOrderingMapper orderingDtoToOrderingMapper;
+
+    private final OrderingToOutOrderingDtoMapper orderingToOutOrderingDtoMapper;
 
     @GetMapping("/getAllOrders")
     public List<InOutOrderingDTO> getAllOrders() {
-        return orderService.findAll().stream().map(OrderingToOutOrderingDtoMapper.INSTANCE::mapToDto).collect(Collectors.toList());
+        return orderService.findAll().stream().map(orderingToOutOrderingDtoMapper::mapToDto).collect(Collectors.toList());
     }
 
     @GetMapping("/getUpdateInfo")
@@ -87,8 +96,8 @@ public class ServerController {
     @PostMapping("/newOrder")
     public ResponseEntity<Integer> newOrder(@RequestBody OrderingDTO orderDTO) {
         newOrderCreateService.makeTrue();
-        return new ResponseEntity<>(orderService.save(OrderingDtoToOrderingMapper.INSTANCE
-                .toOrdering(orderDTO, dessertService, milkService, syrupService, drinkService)).getId(), HttpStatus.OK);
+        return new ResponseEntity<>(orderService.save(orderingDtoToOrderingMapper.toOrdering(orderDTO,
+                dessertService, milkService, syrupService, drinkService)).getId(), HttpStatus.OK);
     }
 
     @PostMapping("/closeOrder")
