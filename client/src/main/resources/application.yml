@@ -1,0 +1,7 @@
+server:
+  port: 8081
+spring:
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+server-back:
+  address: http://server:8080

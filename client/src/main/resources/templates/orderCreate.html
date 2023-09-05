@@ -91,7 +91,7 @@
             <a th:text="${'Комментарий: ' + order.getComment()}"></a>
         </div>
         <div>
-            <form action="http://localhost:8081">
+            <form method="get" th:action="@{/}">
                 <input type="submit" value="OK" />
             </form>
         </div>

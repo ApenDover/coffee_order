@@ -31,7 +31,7 @@ public final class CoffeeRestConst {
 
     private String makeUpdateFalseEndPoint;
 
-    @Value("${serverAddress}")
+    @Value("${server-back.address}")
     private String url;
 
     @PostConstruct

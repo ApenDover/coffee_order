@@ -1,0 +1,22 @@
+services:
+  psql:
+    build: ./database
+    volumes:
+      - data:/var/lib/postgresql/data
+  server:
+    build: ./server
+    ports:
+      - 8090:8080
+    depends_on:
+      - psql
+  client:
+    build: ./client
+    ports:
+      - 8080:8081
+    depends_on:
+      - psql
+      - server
+volumes:
+  data:
+networks:
+  coffee:
