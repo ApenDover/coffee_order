@@ -1,14 +1,14 @@
 package ts.andrey.common.data.entity;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Data
 @Accessors(chain = true)
@@ -18,6 +18,7 @@ public class NewOrderCreate {
     @Id
     private int id;
 
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @Column(name = "update_time")
     private LocalDateTime updateTime;
 

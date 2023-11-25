@@ -1,15 +1,13 @@
 package ts.andrey.service;
 
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ts.andrey.common.data.entity.NewOrderCreate;
 import ts.andrey.repositories.NewOrderCreateRepository;
 
-import javax.annotation.PostConstruct;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.Objects;
 
 @Service

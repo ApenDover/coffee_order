@@ -13,8 +13,8 @@ import ts.andrey.common.data.entity.Milk;
 import ts.andrey.common.data.entity.NewOrderCreate;
 import ts.andrey.common.data.entity.Ordering;
 import ts.andrey.common.data.entity.Syrup;
-import ts.andrey.constants.CoffeeRestConst;
 import ts.andrey.common.dto.OrderingDTO;
+import ts.andrey.constants.CoffeeRestConst;
 import ts.andrey.dto.InOutOrderingDTOView;
 import ts.andrey.mapper.OrderingToOrderingDtoMapper;
 import ts.andrey.service.GetApi;
@@ -91,7 +91,7 @@ public class MainController {
         if (orderingArrayList.isEmpty()) {
             loadData();
         } else {
-            NewOrderCreate newOrderCreate = getApi.getObjectList(coffeeRestConst.getUpdateInfoEndPoint(), NewOrderCreate[].class).get(0);
+            final var newOrderCreate = getApi.getObjectList(coffeeRestConst.getUpdateInfoEndPoint(), NewOrderCreate[].class).get(0);
             if (newOrderCreate.isUpdate()) {
                 loadData();
                 getApi.getObjectList(coffeeRestConst.getMakeUpdateFalseEndPoint(), String[].class);

@@ -1,7 +1,7 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '2.7.3'
-    id 'io.spring.dependency-management' version '1.1.0'
+    id 'org.springframework.boot' version '3.2.0'
+    id 'io.spring.dependency-management' version '1.1.4'
 }
 
 allprojects {
@@ -36,15 +36,14 @@ subprojects {
 
     group = 'ts.andrey'
     version = '0.1'
-    sourceCompatibility = '11'
+    sourceCompatibility = '17'
 
-    java.sourceCompatibility(JavaVersion.VERSION_11)
+    java.sourceCompatibility(JavaVersion.VERSION_17)
 
     dependencies {
-        compileOnly 'org.mapstruct:mapstruct-jdk8:1.5.5.Final'
-        implementation "org.mapstruct:mapstruct:1.5.5.Final"
-        compileOnly 'org.projectlombok:lombok:1.18.20'
-        annotationProcessor 'org.projectlombok:lombok:1.18.20'
+        implementation 'org.mapstruct:mapstruct:1.5.5.Final'
+        annotationProcessor 'org.projectlombok:lombok'
+        compileOnly 'org.projectlombok:lombok'
         annotationProcessor "org.mapstruct:mapstruct-processor:1.5.5.Final"
         implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
         implementation group: 'com.vaadin.external.google', name: 'android-json', version: '0.0.20131108.vaadin1'
@@ -68,7 +67,7 @@ subprojects {
 
 project("server") {
 
-    sourceCompatibility = '11'
+    sourceCompatibility = '17'
 
     bootJar {
         launchScript()
@@ -83,7 +82,7 @@ project("server") {
 
 project("client") {
 
-    sourceCompatibility = '11'
+    sourceCompatibility = '17'
 
     bootJar {
         launchScript()
