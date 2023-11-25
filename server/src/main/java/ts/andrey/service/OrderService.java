@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ts.andrey.common.data.entity.Ordering;
 import ts.andrey.repositories.OrderRepository;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -21,7 +22,11 @@ public class OrderService {
         return orderRepository.findAll();
     }
 
-    public void update(boolean status, Date date, int id) {
+    public List<Ordering> findToday() {
+        return orderRepository.findAllByDateAfter();
+    }
+
+    public void update(boolean status, LocalDateTime date, int id) {
         orderRepository.update(status, date, id);
     }
 

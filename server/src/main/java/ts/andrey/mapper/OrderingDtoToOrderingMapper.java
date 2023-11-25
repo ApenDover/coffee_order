@@ -14,6 +14,7 @@ import ts.andrey.service.DrinkService;
 import ts.andrey.service.MilkService;
 import ts.andrey.service.SyrupService;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -66,7 +67,7 @@ public interface OrderingDtoToOrderingMapper {
             });
         }
         ordering.setPrice(price);
-        ordering.setDate(new Date());
+        ordering.setDate(LocalDateTime.now());
     }
 
 }

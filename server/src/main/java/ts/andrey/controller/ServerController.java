@@ -26,8 +26,8 @@ import ts.andrey.service.NewOrderCreateService;
 import ts.andrey.service.OrderService;
 import ts.andrey.service.SyrupService;
 
+import java.time.LocalDateTime;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -54,7 +54,7 @@ public class ServerController {
 
     @GetMapping("/getAllOrders")
     public List<InOutOrderingDTO> getAllOrders() {
-        return orderService.findAll().stream().map(orderingToOutOrderingDtoMapper::mapToDto).collect(Collectors.toList());
+        return orderService.findToday().stream().map(orderingToOutOrderingDtoMapper::mapToDto).collect(Collectors.toList());
     }
 
     @GetMapping("/getUpdateInfo")
@@ -102,7 +102,7 @@ public class ServerController {
 
     @PostMapping("/closeOrder")
     public ResponseEntity<HttpStatus> editOrder(@RequestBody OrderingDTO orderDTO) {
-        orderService.update(true, new Date(), orderDTO.getOrderId());
+        orderService.update(true, LocalDateTime.now(), orderDTO.getOrderId());
         newOrderCreateService.makeTrue();
         return ResponseEntity.ok(HttpStatus.OK);
     }

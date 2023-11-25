@@ -15,7 +15,7 @@ public class OrderingDTO {
 
     private int syrupId;
 
-    private Integer[] dess;
+    private Integer[] dessertsId;
 
     private boolean status;
 

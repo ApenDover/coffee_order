@@ -218,13 +218,9 @@ public class MainController {
             coffeeDrinkArrayList.addAll(drinkArrayList.stream().filter(Drink::isCoffee).collect(Collectors.toList()));
             otherDrinkArrayList.addAll(drinkArrayList);
             otherDrinkArrayList.removeAll(coffeeDrinkArrayList);
-            coffeeDrinkArrayList.forEach(drink -> {
-                coffeeName.add(drink.getName());
-            });
 
-            otherDrinkArrayList.forEach(drink -> {
-                otherDrinkName.add(drink.getName());
-            });
+            coffeeDrinkArrayList.forEach(drink -> coffeeName.add(drink.getName()));
+            otherDrinkArrayList.forEach(drink -> otherDrinkName.add(drink.getName()));
 
             coffeeName.forEach(s -> {
                 TreeSet<Drink> coffeeSet = new TreeSet<>();

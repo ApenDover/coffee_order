@@ -16,6 +16,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -56,10 +58,10 @@ public class Ordering implements Cloneable {
     private boolean status;
 
     @Column(name = "date_create")
-    private Date date;
+    private LocalDateTime date;
 
     @Column(name = "date_ready")
-    private Date dateReady;
+    private LocalDateTime dateReady;
 
     private String comment;
 
@@ -76,8 +78,8 @@ public class Ordering implements Cloneable {
         this.desserts = new ArrayList<>();
         this.price = 0;
         this.status = false;
-        this.date = new Date();
-        this.dateReady = new Date();
+        this.date = LocalDateTime.now();
+        this.dateReady = LocalDateTime.now();
         this.comment = "";
     }
 
