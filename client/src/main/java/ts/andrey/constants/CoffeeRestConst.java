@@ -23,7 +23,7 @@ public final class CoffeeRestConst {
 
     private String allDrinkEndPoint;
 
-    private String allOrderEndPoint;
+    private String allTodayOrderEndPoint;
 
     private String newOrderEndPoint;
 
@@ -40,7 +40,7 @@ public final class CoffeeRestConst {
         allSyrupEndPoint = url + "/api/getAllSyrup";
         allDesertsEndPoint = url + "/api/getAllDessert";
         allDrinkEndPoint = url + "/api/getAllDrink";
-        allOrderEndPoint = url + "/api/getAllOrders";
+        allTodayOrderEndPoint = url + "/api/getAllTodayOrders";
         newOrderEndPoint = url + "/api/newOrder";
         closeOrderEndPoint = url + "/api/closeOrder";
         updateInfoEndPoint = url + "/api/getUpdateInfo";

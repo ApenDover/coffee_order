@@ -6,7 +6,11 @@ import org.springframework.transaction.annotation.Transactional;
 import ts.andrey.common.data.entity.NewOrderCreate;
 import ts.andrey.repositories.NewOrderCreateRepository;
 
+import javax.annotation.PostConstruct;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -15,6 +19,9 @@ public class NewOrderCreateService {
 
     private final NewOrderCreateRepository newOrderCreateRepository;
 
+
+
+    @PostConstruct
     private NewOrderCreate giveIt() {
         return newOrderCreateRepository.findById(1).orElse(null);
     }
@@ -27,18 +34,18 @@ public class NewOrderCreateService {
     @Transactional
     public void makeTrue() {
         checkIt();
-        newOrderCreateRepository.save(giveIt().setUpdate(true).setUpdateTime(new Date()));
+        newOrderCreateRepository.save(giveIt().setUpdate(true).setUpdateTime(LocalDateTime.now()));
     }
 
     @Transactional
     public void makeFalse() {
         checkIt();
-        newOrderCreateRepository.save(giveIt().setUpdate(false).setUpdateTime(new Date()));
+        newOrderCreateRepository.save(giveIt().setUpdate(false).setUpdateTime(LocalDateTime.now()));
     }
 
     private void checkIt() {
-        if (giveIt() == null) {
-            newOrderCreateRepository.save(new NewOrderCreate().setId(1).setUpdateTime(new Date()).setUpdate(false));
+        if (Objects.isNull(giveIt())) {
+            newOrderCreateRepository.save(new NewOrderCreate().setId(1).setUpdateTime(LocalDateTime.now()).setUpdate(false));
         }
     }
 

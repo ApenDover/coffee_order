@@ -251,7 +251,7 @@ public class MainController {
         orderingArrayList.clear();
         orderingTrueArrayList.clear();
         orderingFalseArrayList.clear();
-        orderingArrayList.addAll(getApi.getObjectList(coffeeRestConst.getAllOrderEndPoint(), InOutOrderingDTOView[].class));
+        orderingArrayList.addAll(getApi.getObjectList(coffeeRestConst.getAllTodayOrderEndPoint(), InOutOrderingDTOView[].class));
         for (InOutOrderingDTOView orderingDTO : orderingArrayList) {
             if (orderingDTO.isStatus()) {
                 orderingTrueArrayList.add(orderingDTO);

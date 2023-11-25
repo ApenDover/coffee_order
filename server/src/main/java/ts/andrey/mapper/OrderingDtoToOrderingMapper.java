@@ -16,9 +16,7 @@ import ts.andrey.service.SyrupService;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,7 +27,7 @@ public interface OrderingDtoToOrderingMapper {
     @Mapping(target = "milk", source = "milkId")
     @Mapping(target = "drink", source = "drinkId")
     @Mapping(target = "syrup", source = "syrupId")
-    @Mapping(target = "desserts", source = "dess", qualifiedByName = "IntegerArrayToListDessert")
+    @Mapping(target = "desserts", source = "dessertsId", qualifiedByName = "IntegerArrayToListDessert")
     @Mapping(target = "price", ignore = true)
     @Mapping(target = "date", ignore = true)
     @Mapping(target = "dateReady", ignore = true)
@@ -37,11 +35,11 @@ public interface OrderingDtoToOrderingMapper {
                         @Context SyrupService syrupService, @Context DrinkService drinkService);
 
     @Named("IntegerArrayToListDessert")
-    default List<Dessert> toIntegerArray(Integer[] desserts, @Context DessertService dessertService) {
+    default List<Dessert> toIntegerArray(List<Integer> desserts, @Context DessertService dessertService) {
         if (desserts == null) {
             return Collections.emptyList();
         }
-        return Arrays.stream(desserts).map(dessertService::findOne).collect(Collectors.toList());
+        return desserts.stream().map(dessertService::findOne).collect(Collectors.toList());
     }
 
 

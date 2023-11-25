@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository;
 import ts.andrey.common.data.entity.Ordering;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 @Repository

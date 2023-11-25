@@ -6,6 +6,8 @@ import lombok.experimental.Accessors;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
@@ -17,7 +19,7 @@ public class NewOrderCreate {
     private int id;
 
     @Column(name = "update_time")
-    private Date updateTime;
+    private LocalDateTime updateTime;
 
     private boolean update;
 

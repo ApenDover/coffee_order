@@ -52,8 +52,8 @@ public class ServerController {
 
     private final OrderingToOutOrderingDtoMapper orderingToOutOrderingDtoMapper;
 
-    @GetMapping("/getAllOrders")
-    public List<InOutOrderingDTO> getAllOrders() {
+    @GetMapping("/getAllTodayOrders")
+    public List<InOutOrderingDTO> getAllTodayOrders() {
         return orderService.findToday().stream().map(orderingToOutOrderingDtoMapper::mapToDto).collect(Collectors.toList());
     }
 
