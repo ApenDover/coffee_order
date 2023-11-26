@@ -9,7 +9,6 @@ import ts.andrey.common.dto.OrderingDTO;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
 public interface OrderingToOrderingDtoMapper {
@@ -24,11 +23,10 @@ public interface OrderingToOrderingDtoMapper {
     @Named("ToIntegerArray")
     default List<Integer> toIntegerArray(List<Dessert> desserts) {
         if (desserts == null) {
-            return Collections.EMPTY_LIST;
+            return Collections.emptyList();
         }
         return desserts.stream()
-                .map(Dessert::getId)
-                .collect(Collectors.toList());
+                .map(Dessert::getId).toList();
     }
 
 }

@@ -1,6 +1,7 @@
 package ts.andrey.controller;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,14 +10,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ts.andrey.common.dto.OrderingDTO;
-import ts.andrey.common.dto.InOutOrderingDTO;
 import ts.andrey.common.data.entity.Dessert;
 import ts.andrey.common.data.entity.Drink;
 import ts.andrey.common.data.entity.Milk;
 import ts.andrey.common.data.entity.NewOrderCreate;
 import ts.andrey.common.data.entity.Ordering;
 import ts.andrey.common.data.entity.Syrup;
+import ts.andrey.common.dto.InOutOrderingDTO;
+import ts.andrey.common.dto.OrderingDTO;
 import ts.andrey.mapper.OrderingDtoToOrderingMapper;
 import ts.andrey.mapper.OrderingToOutOrderingDtoMapper;
 import ts.andrey.service.DessertService;
@@ -29,8 +30,8 @@ import ts.andrey.service.SyrupService;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
+@Slf4j
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api")
@@ -54,7 +55,9 @@ public class ServerController {
 
     @GetMapping("/getAllTodayOrders")
     public List<InOutOrderingDTO> getAllTodayOrders() {
-        return orderService.findToday().stream().map(orderingToOutOrderingDtoMapper::mapToDto).collect(Collectors.toList());
+        final var orderList = orderService.findToday();
+        log.info("find all orders for today: {}", orderList.size());
+        return orderList.stream().map(orderingToOutOrderingDtoMapper::mapToDto).toList();
     }
 
     @GetMapping("/getUpdateInfo")
@@ -96,8 +99,10 @@ public class ServerController {
     @PostMapping("/newOrder")
     public ResponseEntity<Integer> newOrder(@RequestBody OrderingDTO orderDTO) {
         newOrderCreateService.makeTrue();
-        return new ResponseEntity<>(orderService.save(orderingDtoToOrderingMapper.toOrdering(orderDTO,
-                dessertService, milkService, syrupService, drinkService)).getId(), HttpStatus.OK);
+        final var order = orderService.save(orderingDtoToOrderingMapper.toOrdering(orderDTO,
+                dessertService, milkService, syrupService, drinkService));
+        log.info("create a new order with id: {}", orderDTO.getOrderId());
+        return new ResponseEntity<>(order.getId(), HttpStatus.OK);
     }
 
     @PostMapping("/closeOrder")

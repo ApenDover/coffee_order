@@ -11,3 +11,18 @@ spring:
         show_sql: true
     hibernate:
       ddl-auto: update
+management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus
+  metrics:
+    # включить гистограмму на основе процентилей для http запросов
+    distribution:
+      percentiles-histogram.http.server.requests: true
+      # сегментов гистограммы http SLA
+      sla.http.server.requests: 100 мс, 150 мс, 250 мс, 500 мс, 1 с
+    # включить метрики JVM
+    enable.jvm: true
+    # Включить экспорт prometheus
+    export.prometheus.enabled: true
