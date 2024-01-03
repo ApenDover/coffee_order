@@ -31,10 +31,26 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 
+import static ts.andrey.common.rest.ServerEndpoint.ALL_TODAY_ORDERS;
+import static ts.andrey.common.rest.ServerEndpoint.API;
+import static ts.andrey.common.rest.ServerEndpoint.CLOSE_ORDER;
+import static ts.andrey.common.rest.ServerEndpoint.DESSERT_LIST;
+import static ts.andrey.common.rest.ServerEndpoint.DRINK_LIST;
+import static ts.andrey.common.rest.ServerEndpoint.GET_ORDER_ID;
+import static ts.andrey.common.rest.ServerEndpoint.MAKE_UPDATE_FALSE;
+import static ts.andrey.common.rest.ServerEndpoint.MILK_LIST;
+import static ts.andrey.common.rest.ServerEndpoint.NEW_DESSERT;
+import static ts.andrey.common.rest.ServerEndpoint.NEW_DRINK;
+import static ts.andrey.common.rest.ServerEndpoint.NEW_MILK;
+import static ts.andrey.common.rest.ServerEndpoint.NEW_ORDER;
+import static ts.andrey.common.rest.ServerEndpoint.NEW_SYRUP;
+import static ts.andrey.common.rest.ServerEndpoint.SYRUP_LIST;
+import static ts.andrey.common.rest.ServerEndpoint.UPDATE_INFO;
+
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api")
+@RequestMapping(API)
 public class ServerController {
 
     private final OrderService orderService;
@@ -53,50 +69,50 @@ public class ServerController {
 
     private final OrderingToOutOrderingDtoMapper orderingToOutOrderingDtoMapper;
 
-    @GetMapping("/getAllTodayOrders")
+    @GetMapping(ALL_TODAY_ORDERS)
     public List<InOutOrderingDTO> getAllTodayOrders() {
         final var orderList = orderService.findToday();
         log.info("find all orders for today: {}", orderList.size());
         return orderList.stream().map(orderingToOutOrderingDtoMapper::mapToDto).toList();
     }
 
-    @GetMapping("/getUpdateInfo")
+    @GetMapping(UPDATE_INFO)
     public List<NewOrderCreate> updateBarista() {
         return Collections.singletonList(newOrderCreateService.getNewOrderCreate());
     }
 
-    @GetMapping("/makeUpdateFalse")
+    @GetMapping(MAKE_UPDATE_FALSE)
     public List<String> makeUpdateFalse() {
         newOrderCreateService.makeFalse();
         return Collections.singletonList("OK");
     }
 
-    @GetMapping("/getOrder/{id}")
+    @GetMapping(GET_ORDER_ID)
     public Ordering getOrder(@PathVariable int id) {
         return orderService.findOne(id);
     }
 
-    @GetMapping("/getAllMilk")
+    @GetMapping(MILK_LIST)
     public List<Milk> getMilk() {
         return milkService.findAll();
     }
 
-    @GetMapping("/getAllSyrup")
+    @GetMapping(SYRUP_LIST)
     public List<Syrup> getSyrup() {
         return syrupService.findAll();
     }
 
-    @GetMapping("/getAllDessert")
+    @GetMapping(DESSERT_LIST)
     public List<Dessert> getDessert() {
         return dessertService.findAll();
     }
 
-    @GetMapping("/getAllDrink")
+    @GetMapping(DRINK_LIST)
     public List<Drink> getDrink() {
         return drinkService.findAll();
     }
 
-    @PostMapping("/newOrder")
+    @PostMapping(NEW_ORDER)
     public ResponseEntity<Integer> newOrder(@RequestBody OrderingDTO orderDTO) {
         newOrderCreateService.makeTrue();
         final var order = orderService.save(orderingDtoToOrderingMapper.toOrdering(orderDTO,
@@ -105,32 +121,32 @@ public class ServerController {
         return new ResponseEntity<>(order.getId(), HttpStatus.OK);
     }
 
-    @PostMapping("/closeOrder")
+    @PostMapping(CLOSE_ORDER)
     public ResponseEntity<HttpStatus> editOrder(@RequestBody OrderingDTO orderDTO) {
         orderService.update(true, LocalDateTime.now(), orderDTO.getOrderId());
         newOrderCreateService.makeTrue();
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    @PostMapping("/newMilk")
+    @PostMapping(NEW_MILK)
     public ResponseEntity<HttpStatus> newMilk(@RequestBody Milk milk) {
         milkService.save(milk);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    @PostMapping("/newDrink")
+    @PostMapping(NEW_DRINK)
     public ResponseEntity<HttpStatus> newDrink(@RequestBody Drink drink) {
         drinkService.save(drink);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    @PostMapping("/newSyrup")
+    @PostMapping(NEW_SYRUP)
     public ResponseEntity<HttpStatus> newSyrup(@RequestBody Syrup syrup) {
         syrupService.save(syrup);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    @PostMapping("/newDessert")
+    @PostMapping(NEW_DESSERT)
     public ResponseEntity<HttpStatus> newDessert(@RequestBody Dessert dessert) {
         dessertService.save(dessert);
         return ResponseEntity.ok(HttpStatus.OK);
