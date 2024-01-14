@@ -86,7 +86,7 @@
                         </div>
                         <div>
                             <form th:each="drink : ${entry.value}" method="get"
-                                  th:action="@{/drink/{id}(id=${drink.getId()})}"
+                                  th:action="@{${setDrinkLink}(id=${drink.getId()})}"
                                   style="display: inline;">
                                 <input class="drinkMenu" type="submit" th:value="${drink.getPrice()}">
                             </form>
@@ -103,7 +103,7 @@
                         </div>
                         <div>
                             <form th:each="drink : ${entry.value}" method="get"
-                                  th:action="@{/drink/{id}(id=${drink.getId()})}" style="display: inline;">
+                                  th:action="@{${setDrinkLink}(id=${drink.getId()})}" style="display: inline;">
                                 <input class="drinkMenu" type="submit" th:value="${drink.getPrice()}">
                             </form>
                         </div>
@@ -115,7 +115,7 @@
                 <a>Молоко:</a>
                 <div th:each="milk : ${milkList}">
                     <!--                    <form method="post" action="/milk" style="display: inline;">-->
-                    <form method="get" th:action="@{/milk/{id}(id=${milk.getId()})}" style="display: inline;">
+                    <form method="get" th:action="@{${setMilkLink}(id=${milk.getId()})}" style="display: inline;">
                         <div class="posmenu">
                             <div>
                                 <input class="option" type="submit" th:value="${milk.getName()}">
@@ -131,7 +131,7 @@
             <div class="menupoint" th:if="${order.getDrink()?.isCoffee()}">
                 <a>Сироп:</a>
                 <div th:each="syrup : ${syrupList}">
-                    <form method="get" th:action="@{/syrup/{id}(id=${syrup.getId()})}" style="display: inline;">
+                    <form method="get" th:action="@{${setSyrupLink}(id=${syrup.getId()})}" style="display: inline;">
                         <div class="posmenu">
                             <div>
                                 <input class="option" type="submit" th:value="${syrup.getName()}">
@@ -147,7 +147,7 @@
             <div class="menupoint" th:if="${not #lists.isEmpty(dessertList)}">
                 <a>Десерт:</a>
                 <div th:each="dessert : ${dessertList}">
-                    <form method="get" th:action="@{/dessert/{id}(id=${dessert.getId()})}" style="display: inline;">
+                    <form method="get" th:action="@{${setDessertLink}(id=${dessert.getId()})}" style="display: inline;">
                         <div class="posmenu">
                             <div>
                                 <input class="option" type="submit" th:value="${dessert.getName()}">
@@ -197,7 +197,7 @@
             </div>
         </div>
         <div class="makeOrder">
-            <form method="get" th:action="@{/newOrder}" style="display: inline; padding: 20px;">
+            <form method="get" th:action="@{${newOrderLink}}" style="display: inline; padding: 20px;">
                 <div>
                     <input type="text" th:name="comment" id="comment" placeholder="Комментарий"
                            style="width: -webkit-fill-available;">

@@ -85,7 +85,7 @@
     <div class="underCard">
         <div class="cardMain">
             <div th:each="order:${orderFalseList}" class="card">
-                <form method="get" th:action="@{/closeOrder/{id}(id = ${order.getId()})}">
+                <form method="get" th:action="@{${closeOrderLink}(id = ${order.getId()})}">
                     <button class="buttonCard">
                         <div style="width: 100%; display:table;">
                             <!--                            <div th:text="${card.isCheck() ? 'M' : space}"-->
