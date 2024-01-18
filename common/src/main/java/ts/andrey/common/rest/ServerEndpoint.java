@@ -35,4 +35,5 @@ public class ServerEndpoint {
 
     public static final String NEW_DESSERT = "/newDessert";
 
+    public static final String PASSWORD = "/getPassword/{user}";
 }

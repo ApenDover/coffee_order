@@ -107,58 +107,6 @@ public class DataProcessor {
         model.addAttribute("closeOrderLink", ClientEndpoint.CLOSE_ORDER);
     }
 
-    private void loadData() {
-        orderingArrayList.clear();
-        orderingTrueArrayList.clear();
-        orderingFalseArrayList.clear();
-        orderingArrayList.addAll(getApi.getObjectList(coffeeRestConst.getAllTodayOrderEndPoint(), InOutOrderingDTOView[].class));
-        for (InOutOrderingDTOView orderingDTO : orderingArrayList) {
-            if (orderingDTO.isStatus()) {
-                orderingTrueArrayList.add(orderingDTO);
-            } else {
-                orderingFalseArrayList.add(orderingDTO);
-            }
-        }
-    }
-
-    private void updateData() {
-        try {
-            syrupArrayList.addAll(getApi.getObjectList(coffeeRestConst.getAllSyrupEndPoint(), Syrup[].class));
-            dessertArrayList.addAll(getApi.getObjectList(coffeeRestConst.getAllDesertsEndPoint(), Dessert[].class));
-            drinkArrayList.addAll(getApi.getObjectList(coffeeRestConst.getAllDrinkEndPoint(), Drink[].class));
-            milkArrayList.addAll(getApi.getObjectList(coffeeRestConst.getAllMilkEndPoint(), Milk[].class));
-            coffeeDrinkArrayList.addAll(drinkArrayList.stream().filter(Drink::isCoffee).collect(Collectors.toList()));
-            otherDrinkArrayList.addAll(drinkArrayList);
-            otherDrinkArrayList.removeAll(coffeeDrinkArrayList);
-
-            coffeeDrinkArrayList.forEach(drink -> coffeeName.add(drink.getName()));
-            otherDrinkArrayList.forEach(drink -> otherDrinkName.add(drink.getName()));
-
-            coffeeName.forEach(s -> {
-                TreeSet<Drink> coffeeSet = new TreeSet<>();
-                for (Drink drink : coffeeDrinkArrayList) {
-                    if (drink.getName().equals(s)) {
-                        coffeeSet.add(drink);
-                    }
-                }
-                coffeeDrinkHashMap.put(s, coffeeSet);
-            });
-
-            otherDrinkName.forEach(s -> {
-                TreeSet<Drink> otherDrinkSet = new TreeSet<>();
-                for (Drink drink : otherDrinkArrayList) {
-                    if (drink.getName().equals(s)) {
-                        otherDrinkSet.add(drink);
-                    }
-                }
-                otherDrinkHashMap.put(s, otherDrinkSet);
-            });
-
-        } catch (Exception e) {
-            log.error(e.getMessage() + " " + Arrays.toString(e.getStackTrace()));
-        }
-    }
-
     public void newOrder(Model model, String comment) {
         ordering.setComment(comment);
         model.addAttribute("orderID", getApi.sendOrder(coffeeRestConst.getNewOrderEndPoint(),
@@ -246,4 +194,52 @@ public class DataProcessor {
         }
         ordering.setDesserts(dessertList);
     }
+
+    private void loadData() {
+        orderingArrayList.clear();
+        orderingTrueArrayList.clear();
+        orderingFalseArrayList.clear();
+        orderingArrayList.addAll(getApi.getObjectList(coffeeRestConst.getAllTodayOrderEndPoint(), InOutOrderingDTOView[].class));
+        for (InOutOrderingDTOView orderingDTO : orderingArrayList) {
+            if (orderingDTO.isStatus()) {
+                orderingTrueArrayList.add(orderingDTO);
+            } else {
+                orderingFalseArrayList.add(orderingDTO);
+            }
+        }
+    }
+
+    private void updateData() {
+        try {
+            syrupArrayList.addAll(getApi.getObjectList(coffeeRestConst.getAllSyrupEndPoint(), Syrup[].class));
+            dessertArrayList.addAll(getApi.getObjectList(coffeeRestConst.getAllDesertsEndPoint(), Dessert[].class));
+            drinkArrayList.addAll(getApi.getObjectList(coffeeRestConst.getAllDrinkEndPoint(), Drink[].class));
+            milkArrayList.addAll(getApi.getObjectList(coffeeRestConst.getAllMilkEndPoint(), Milk[].class));
+            coffeeDrinkArrayList.addAll(drinkArrayList.stream().filter(Drink::isCoffee).collect(Collectors.toList()));
+            otherDrinkArrayList.addAll(drinkArrayList);
+            otherDrinkArrayList.removeAll(coffeeDrinkArrayList);
+
+            coffeeDrinkArrayList.forEach(drink -> coffeeName.add(drink.getName()));
+            otherDrinkArrayList.forEach(drink -> otherDrinkName.add(drink.getName()));
+
+            extractFromSet(coffeeName, coffeeDrinkArrayList, coffeeDrinkHashMap);
+            extractFromSet(otherDrinkName, otherDrinkArrayList, otherDrinkHashMap);
+
+        } catch (Exception e) {
+            log.error(e.getMessage() + " " + Arrays.toString(e.getStackTrace()));
+        }
+    }
+
+    private void extractFromSet(Set<String> drinkName, List<Drink> coffeeDrinkArrayList, HashMap<String, TreeSet<Drink>> coffeeDrinkHashMap) {
+        drinkName.forEach(s -> {
+            TreeSet<Drink> coffeeSet = new TreeSet<>();
+            for (Drink drink : coffeeDrinkArrayList) {
+                if (drink.getName().equals(s)) {
+                    coffeeSet.add(drink);
+                }
+            }
+            coffeeDrinkHashMap.put(s, coffeeSet);
+        });
+    }
+
 }

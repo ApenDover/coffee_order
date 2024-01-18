@@ -14,10 +14,20 @@ public abstract class AbstractClientService {
 
     private final RestTemplate restTemplate;
 
-    protected <T> T send(String url, String body, Class<T> returnType) {
+    protected <T> T sendPost(String url, String body, Class<T> returnType) {
         final var entity = generateEntity(body);
         final var response = restTemplate.exchange(url, HttpMethod.POST, entity, returnType);
         return response.getBody();
+    }
+
+    protected <T> T sendGet(String url, String body, Class<T> returnType) {
+        try {
+            final var entity = generateEntity(body);
+            final var response = restTemplate.exchange(url, HttpMethod.GET, entity, returnType);
+            return response.getBody();
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     private HttpEntity<?> generateEntity(Object body) {

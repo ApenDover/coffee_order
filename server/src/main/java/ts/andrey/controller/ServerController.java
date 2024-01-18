@@ -20,6 +20,7 @@ import ts.andrey.common.dto.InOutOrderingDTO;
 import ts.andrey.common.dto.OrderingDTO;
 import ts.andrey.mapper.OrderingDtoToOrderingMapper;
 import ts.andrey.mapper.OrderingToOutOrderingDtoMapper;
+import ts.andrey.service.BaristaUserService;
 import ts.andrey.service.DessertService;
 import ts.andrey.service.DrinkService;
 import ts.andrey.service.MilkService;
@@ -44,6 +45,7 @@ import static ts.andrey.common.rest.ServerEndpoint.NEW_DRINK;
 import static ts.andrey.common.rest.ServerEndpoint.NEW_MILK;
 import static ts.andrey.common.rest.ServerEndpoint.NEW_ORDER;
 import static ts.andrey.common.rest.ServerEndpoint.NEW_SYRUP;
+import static ts.andrey.common.rest.ServerEndpoint.PASSWORD;
 import static ts.andrey.common.rest.ServerEndpoint.SYRUP_LIST;
 import static ts.andrey.common.rest.ServerEndpoint.UPDATE_INFO;
 
@@ -52,6 +54,8 @@ import static ts.andrey.common.rest.ServerEndpoint.UPDATE_INFO;
 @RestController
 @RequestMapping(API)
 public class ServerController {
+
+    private final BaristaUserService baristaUserService;
 
     private final OrderService orderService;
 
@@ -150,6 +154,12 @@ public class ServerController {
     public ResponseEntity<HttpStatus> newDessert(@RequestBody Dessert dessert) {
         dessertService.save(dessert);
         return ResponseEntity.ok(HttpStatus.OK);
+    }
+
+    @GetMapping(PASSWORD)
+    public String getPassword(@PathVariable String user) {
+        log.info("get request for user: {}", user);
+        return baristaUserService.findByName(user).getPassword();
     }
 
 }

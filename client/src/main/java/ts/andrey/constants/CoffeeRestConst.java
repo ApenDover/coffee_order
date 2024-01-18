@@ -31,6 +31,8 @@ public final class CoffeeRestConst {
 
     private String makeUpdateFalseEndPoint;
 
+    private String passwordForUserEndPoint;
+
     @Value("${server-back.address}")
     private String url;
 
@@ -45,6 +47,7 @@ public final class CoffeeRestConst {
         closeOrderEndPoint = url + ServerEndpoint.API + ServerEndpoint.CLOSE_ORDER;
         updateInfoEndPoint = url + ServerEndpoint.API + ServerEndpoint.UPDATE_INFO;
         makeUpdateFalseEndPoint = url + ServerEndpoint.API + ServerEndpoint.MAKE_UPDATE_FALSE;
+        passwordForUserEndPoint = url + ServerEndpoint.API + ServerEndpoint.PASSWORD;
     }
 
 }

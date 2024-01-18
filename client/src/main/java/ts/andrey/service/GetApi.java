@@ -7,6 +7,7 @@ import org.springframework.web.client.RestTemplate;
 import ts.andrey.common.dto.OrderingDTO;
 
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class GetApi extends AbstractClientService {
@@ -19,10 +20,14 @@ public class GetApi extends AbstractClientService {
 
     public Object sendOrder(String baseUrl, OrderingDTO orderingDTO) {
         try {
-            return send(baseUrl, OBJECT_MAPPER.writeValueAsString(orderingDTO), Object.class);
+            return sendPost(baseUrl, OBJECT_MAPPER.writeValueAsString(orderingDTO), Object.class);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public Optional<String> getPassword(String url, String userName) {
+        return Optional.ofNullable(sendGet(url, userName, String.class));
     }
 
     public <T> List<T> getObjectList(String url, Class<T[]> clazz) {
