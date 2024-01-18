@@ -21,4 +21,5 @@ public class ClientEndpoint {
     public static final String SET_DRINK = "/drink/{id}";
 
     public static final String SET_DESSERT = "/dessert/{id}";
+
 }

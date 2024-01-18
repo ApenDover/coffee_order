@@ -1,37 +1,37 @@
 package ts.andrey.confirguration.security;
 
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
 import ts.andrey.common.dto.User;
 
 import java.util.Collection;
+import java.util.Collections;
 
+@Component
+@RequiredArgsConstructor
+@Setter
 public class UserInfoUserDetails implements UserDetails {
 
+    public static final long serialVersionUID = 12345L;
 
-    private String name;
-
-    private String password;
-
-    public UserInfoUserDetails(User user) {
-        name = user.getName();
-        password = user.getPassword();
-    }
-
+    private User user;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return Collections.emptyList();
     }
 
     @Override
     public String getPassword() {
-        return password;
+        return user.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return name;
+        return user.getName();
     }
 
     @Override
@@ -53,4 +53,5 @@ public class UserInfoUserDetails implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
 }

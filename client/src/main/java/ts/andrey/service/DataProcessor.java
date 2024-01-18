@@ -230,15 +230,17 @@ public class DataProcessor {
         }
     }
 
-    private void extractFromSet(Set<String> drinkName, List<Drink> coffeeDrinkArrayList, HashMap<String, TreeSet<Drink>> coffeeDrinkHashMap) {
-        drinkName.forEach(s -> {
-            TreeSet<Drink> coffeeSet = new TreeSet<>();
-            for (Drink drink : coffeeDrinkArrayList) {
-                if (drink.getName().equals(s)) {
-                    coffeeSet.add(drink);
+    private void extractFromSet(Set<String> drink,
+                                List<Drink> drinkList,
+                                HashMap<String, TreeSet<Drink>> drinkHashMap) {
+        drink.forEach(s -> {
+            final var coffeeSet = new TreeSet<Drink>();
+            for (Drink d : drinkList) {
+                if (d.getName().equals(s)) {
+                    coffeeSet.add(d);
                 }
             }
-            coffeeDrinkHashMap.put(s, coffeeSet);
+            drinkHashMap.put(s, coffeeSet);
         });
     }
 

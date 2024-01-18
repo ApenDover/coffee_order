@@ -16,6 +16,8 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserInfoUserDetailsService implements UserDetailsService {
 
+    private final UserInfoUserDetails userInfoUserDetails;
+
     private final GetApi getApi;
 
     private final CoffeeRestConst coffeeRestConst;
@@ -25,10 +27,11 @@ public class UserInfoUserDetailsService implements UserDetailsService {
         Optional<String> password = getApi.getPassword(FixUrl.enterParamsIfNeed(coffeeRestConst
                 .getPasswordForUserEndPoint(), username), username);
         if (password.isPresent()) {
-            return new UserInfoUserDetails(User.builder()
+            userInfoUserDetails.setUser(User.builder()
                     .name(username)
                     .password(password.get())
                     .build());
+            return userInfoUserDetails;
         }
         throw new UsernameNotFoundException("user not found " + username);
     }
