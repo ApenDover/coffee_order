@@ -31,7 +31,7 @@ public class MainController {
     }
 
     @GetMapping(ClientEndpoint.NEW_ORDER)
-    public String newOrder(Model model, @RequestParam("comment") String comment) throws CloneNotSupportedException {
+    public String newOrder(Model model, @RequestParam("comment") String comment) {
         dataProcessor.newOrder(model, comment);
         return "orderCreate";
     }
