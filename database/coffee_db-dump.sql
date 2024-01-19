@@ -3,7 +3,7 @@
 --
 
 -- Dumped from database version 15.1
--- Dumped by pg_dump version 15.3 (Homebrew)
+-- Dumped by pg_dump version 15.5 (Homebrew)
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -11,24 +11,45 @@ SET idle_in_transaction_session_timeout = 0;
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SELECT pg_catalog.set_config('search_path', '', false);
-SET check_function_bodies = false;
-SET xmloption = content;
-SET client_min_messages = warning;
-SET row_security = off;
+SET
+check_function_bodies = false;
+SET
+xmloption = content;
+SET
+client_min_messages = warning;
+SET
+row_security = off;
 
-SET default_tablespace = '';
+SET
+default_tablespace = '';
 
-SET default_table_access_method = heap;
+SET
+default_table_access_method = heap;
+
+--
+-- Name: barista_user; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.barista_user
+(
+    id       integer NOT NULL,
+    name     character varying(30),
+    password character varying(255)
+);
+
+
+ALTER TABLE public.barista_user OWNER TO postgres;
 
 --
 -- Name: databasechangeloglock; Type: TABLE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE public.databasechangeloglock (
-    id integer NOT NULL,
-    locked boolean NOT NULL,
+CREATE TABLE public.databasechangeloglock
+(
+    id          integer NOT NULL,
+    locked      boolean NOT NULL,
     lockgranted timestamp without time zone,
-    lockedby character varying(255)
+    lockedby    character varying(255)
 );
 
 
@@ -119,19 +140,32 @@ ALTER TABLE public.new_order_create OWNER TO postgres;
 --
 
 CREATE TABLE public.ordering (
-    id integer NOT NULL,
-    comment character varying(255),
-    date_create timestamp without time zone,
-    date_ready timestamp without time zone,
-    price integer NOT NULL,
-    status boolean NOT NULL,
-    drink_id integer,
-    milk_id integer,
-    syrup_id integer
+                                 id          integer NOT NULL,
+                                 comment     character varying(255),
+                                 date_create timestamp without time zone,
+                                 date_ready  timestamp without time zone,
+                                 price       integer NOT NULL,
+                                 status      boolean NOT NULL,
+                                 drink_id    integer,
+                                 milk_id     integer,
+                                 syrup_id    integer
 );
 
 
 ALTER TABLE public.ordering OWNER TO postgres;
+
+--
+-- Name: seq_barista_user; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.seq_barista_user
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE CACHE 1;
+
+
+ALTER TABLE public.seq_barista_user OWNER TO postgres;
 
 --
 -- Name: seq_dessert_id; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -207,9 +241,10 @@ ALTER TABLE public.seq_syrup_id OWNER TO postgres;
 -- Name: syrup; Type: TABLE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE public.syrup (
-    id integer NOT NULL,
-    name character varying(255),
+CREATE TABLE public.syrup
+(
+    id    integer NOT NULL,
+    name  character varying(255),
     price integer
 );
 
@@ -217,11 +252,22 @@ CREATE TABLE public.syrup (
 ALTER TABLE public.syrup OWNER TO postgres;
 
 --
+-- Data for Name: barista_user; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.barista_user (id, name, password) FROM stdin;
+3	test	{SHA-256}{wcUyP2F04JSIY9h+sM1ImZ+KDkxgc5y2dJsS8F/Qg0c=}a2312e7955f7406a9d495f031998a372ab8827d820a19fcad2e219b0e9a8c8bb
+\.
+
+
+--
 -- Data for Name: databasechangeloglock; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.databasechangeloglock (id, locked, lockgranted, lockedby) FROM stdin;
-1	f	\N	\N
+1	f
+\N
+\N
 \.
 
 
@@ -344,10 +390,17 @@ SELECT pg_catalog.setval('public.hibernate_sequence', 154, true);
 
 
 --
+-- Name: seq_barista_user; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.seq_barista_user', 1, false);
+
+
+--
 -- Name: seq_dessert_id; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.seq_dessert_id', 2, true);
+SELECT pg_catalog.setval('public.seq_dessert_id', 3, true);
 
 
 --
