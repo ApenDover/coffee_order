@@ -29,11 +29,15 @@ public class UserInfoUserDetailsService implements UserDetailsService {
         if (password.isPresent()) {
             userInfoUserDetails.setUser(User.builder()
                     .name(username)
-                    .password(password.get())
+                    .password(addSoltToPassword(password.get()))
                     .build());
             return userInfoUserDetails;
         }
         throw new UsernameNotFoundException("user not found " + username);
+    }
+
+    private String addSoltToPassword(String password) {
+        return "{SHA-256}{wcUyP2F04JSIY9h+sM1ImZ+KDkxgc5y2dJsS8F/Qg0c=}" + password;
     }
 
 }

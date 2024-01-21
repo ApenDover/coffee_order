@@ -256,7 +256,7 @@ ALTER TABLE public.syrup OWNER TO postgres;
 --
 
 COPY public.barista_user (id, name, password) FROM stdin;
-3	test	{SHA-256}{wcUyP2F04JSIY9h+sM1ImZ+KDkxgc5y2dJsS8F/Qg0c=}a2312e7955f7406a9d495f031998a372ab8827d820a19fcad2e219b0e9a8c8bb
+3	test	a2312e7955f7406a9d495f031998a372ab8827d820a19fcad2e219b0e9a8c8bb
 \.
 
 
