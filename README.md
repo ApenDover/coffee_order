@@ -31,12 +31,12 @@ docker compose build
 2. Применим конфигурацию к кластеру k8s
 
 ```
-kubectl apply -f postgres-deploy.yml
-kubectl apply -f postgres-service.yml
-kubectl apply -f client-deploy.yml
-kubectl apply -f client-service.yml
-kubectl apply -f server-deploy.yml
-kubectl apply -f server-service.yml
+kubectl apply -f k8s/postgres-deploy.yml
+kubectl apply -f k8s/postgres-service.yml
+kubectl apply -f k8s/client-deploy.yml
+kubectl apply -f k8s/client-service.yml
+kubectl apply -f k8s/server-deploy.yml
+kubectl apply -f k8s/server-service.yml
 ```
 
 Клиентская часть с меню доступна по адресу: http://localhost:8080/ (если deploy в кластере, порт 3000)
