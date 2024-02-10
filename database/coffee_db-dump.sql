@@ -259,18 +259,6 @@ COPY public.barista_user (id, name, password) FROM stdin;
 3	test	a2312e7955f7406a9d495f031998a372ab8827d820a19fcad2e219b0e9a8c8bb
 \.
 
-
---
--- Data for Name: databasechangeloglock; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-COPY public.databasechangeloglock (id, locked, lockgranted, lockedby) FROM stdin;
-1	f
-\N
-\N
-\.
-
-
 --
 -- Data for Name: dessert; Type: TABLE DATA; Schema: public; Owner: postgres
 --
