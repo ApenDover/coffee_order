@@ -17,8 +17,8 @@ import lombok.Data;
 import lombok.experimental.Accessors;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Data
 @Accessors(chain = true)
@@ -70,15 +70,19 @@ public class Ordering implements Cloneable {
 
     public void clear() {
         this.id = 0;
-        this.drink = new Drink();
-        this.milk = new Milk();
-        this.syrup = new Syrup();
-        this.desserts = new ArrayList<>();
+        this.drink = null;
+        this.milk = null;
+        this.syrup = null;
+        this.desserts = null;
         this.price = 0;
         this.status = false;
-        this.date = LocalDateTime.now();
-        this.dateReady = LocalDateTime.now();
+        this.date = null;
+        this.dateReady = null;
         this.comment = "";
+    }
+
+    public boolean isEmpty() {
+        return Objects.isNull(this.drink) && Objects.isNull(this.desserts);
     }
 
 }

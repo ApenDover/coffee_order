@@ -1,5 +1,6 @@
 package ts.andrey.service;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -8,13 +9,13 @@ import ts.andrey.common.data.entity.Dessert;
 import ts.andrey.common.data.entity.Drink;
 import ts.andrey.common.data.entity.Milk;
 import ts.andrey.common.data.entity.NewOrderCreate;
-import ts.andrey.common.data.entity.Ordering;
 import ts.andrey.common.data.entity.Syrup;
 import ts.andrey.common.dto.OrderingDTO;
 import ts.andrey.constants.CoffeeRestConst;
 import ts.andrey.dto.InOutOrderingDTOView;
 import ts.andrey.mapper.OrderingToOrderingDtoMapper;
 import ts.andrey.rest.ClientEndpoint;
+import ts.andrey.rest.UserSession;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -22,7 +23,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Component
@@ -61,27 +61,163 @@ public class DataProcessor {
 
     private final HashMap<String, TreeSet<Drink>> coffeeDrinkHashMap;
 
-    private final Ordering ordering = new Ordering();
-
     private final List<Dessert> dessertList;
 
-    public void getMenu(Model model) {
+    public void getMenu(Model model, HttpSession session) {
 
-        if (drinkArrayList.isEmpty()) {
-            updateData();
-        }
+        updateData();
+
+        final var userSession = (UserSession) session.getAttribute("userSession");
+
         model.addAttribute("milkList", milkArrayList);
         model.addAttribute("syrupList", syrupArrayList);
-        model.addAttribute("otherDrinkHashMap", otherDrinkHashMap);
         model.addAttribute("coffeeDrinkHashMap", coffeeDrinkHashMap);
+        model.addAttribute("otherDrinkHashMap", otherDrinkHashMap);
         model.addAttribute("dessertList", dessertArrayList);
-        model.addAttribute("order", ordering);
+        model.addAttribute("order", userSession.getOrder());
         model.addAttribute("setDrinkLink", ClientEndpoint.SET_DRINK);
         model.addAttribute("setMilkLink", ClientEndpoint.SET_MILK);
         model.addAttribute("setSyrupLink", ClientEndpoint.SET_SYRUP);
         model.addAttribute("setDessertLink", ClientEndpoint.SET_DESSERT);
         model.addAttribute("newOrderLink", ClientEndpoint.NEW_ORDER);
 
+    }
+
+    public void setDrink(int id, UserSession userSession) {
+        final var drink = drinkArrayList.stream().filter(drink1 -> drink1.getId() == id).findFirst().orElseThrow();
+        final var ordering = userSession.getOrder();
+        if (ordering.getDrink() == null) {
+            ordering.setDrink(drink);
+            int price = ordering.getPrice();
+            ordering.setPrice(price + drink.getPrice());
+        } else {
+            int price = ordering.getPrice();
+            final var beforeDrink = ordering.getDrink();
+            if (beforeDrink.equals(drink)) {
+                ordering.setPrice(price - ordering.getDrink().getPrice());
+                ordering.setDrink(null);
+            } else {
+                ordering.setPrice(price - beforeDrink.getPrice() + drink.getPrice());
+                ordering.setDrink(drink);
+            }
+        }
+    }
+
+    public void setMilk(int id, UserSession userSession) {
+        final var ordering = userSession.getOrder();
+        final var milk = milkArrayList.stream().filter(milk1 -> milk1.getId() == id).findFirst().orElse(new Milk());
+        if (ordering.getMilk() == null) {
+            ordering.setMilk(milk);
+            int price = ordering.getPrice();
+            ordering.setPrice(price + milk.getPrice());
+        } else {
+            final var beforeMilk = ordering.getMilk();
+            int price = ordering.getPrice();
+            if (beforeMilk.equals(milk)) {
+                ordering.setPrice(price - ordering.getMilk().getPrice());
+                ordering.setMilk(null);
+            } else {
+                ordering.setPrice(price - beforeMilk.getPrice() + milk.getPrice());
+                ordering.setMilk(milk);
+            }
+        }
+    }
+
+    public void setSyrup(int id, UserSession userSession) {
+        final var ordering = userSession.getOrder();
+        final var syrup = syrupArrayList.stream().filter(syrup1 -> syrup1.getId() == id).findFirst().orElse(new Syrup());
+        if (ordering.getSyrup() == null) {
+            ordering.setSyrup(syrup);
+            int price = ordering.getPrice();
+            ordering.setPrice(price + syrup.getPrice());
+        } else {
+            final var beforeSyrup = ordering.getSyrup();
+            int price = ordering.getPrice();
+            if (beforeSyrup.equals(syrup)) {
+                ordering.setPrice(price - ordering.getSyrup().getPrice());
+                ordering.setSyrup(null);
+            } else {
+                ordering.setPrice(price - beforeSyrup.getPrice() + syrup.getPrice());
+                ordering.setSyrup(syrup);
+            }
+        }
+    }
+
+    public void setDessert(int id, UserSession userSession) {
+        final var ordering = userSession.getOrder();
+        final var dessert = dessertArrayList.stream().filter(dessert1 -> dessert1.getId() == id).findFirst().orElse(new Dessert());
+        if (dessertList.contains(dessert)) {
+            dessertList.remove(dessert);
+            int price = ordering.getPrice();
+            ordering.setPrice(price - dessert.getPrice());
+        } else {
+            dessertList.add(dessert);
+            int price = ordering.getPrice();
+            ordering.setPrice(price + dessert.getPrice());
+        }
+        ordering.setDesserts(dessertList);
+    }
+
+    public void newOrder(Model model, String comment, UserSession userSession) {
+        final var ordering = userSession.getOrder();
+        ordering.setComment(comment);
+        model.addAttribute("orderID", getApi.sendOrder(coffeeRestConst.getNewOrderEndPoint(),
+                mapper.toOrderingDTO(ordering)));
+        try {
+            model.addAttribute("order", ordering.clone());
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException(e);
+        }
+        model.addAttribute("mainPageLink", ClientEndpoint.MAIN_PAGE);
+        ordering.clear();
+    }
+
+    private void updateData() {
+        try {
+            if (syrupArrayList.isEmpty()) {
+                syrupArrayList.addAll(getApi.getObjectList(coffeeRestConst.getAllSyrupEndPoint(), Syrup[].class));
+            }
+            if (dessertArrayList.isEmpty()) {
+                dessertArrayList.addAll(getApi.getObjectList(coffeeRestConst.getAllDesertsEndPoint(), Dessert[].class));
+            }
+            if (drinkArrayList.isEmpty()) {
+                drinkArrayList.addAll(getApi.getObjectList(coffeeRestConst.getAllDrinkEndPoint(), Drink[].class));
+            }
+            if (milkArrayList.isEmpty()) {
+                milkArrayList.addAll(getApi.getObjectList(coffeeRestConst.getAllMilkEndPoint(), Milk[].class));
+            }
+            if (coffeeDrinkArrayList.isEmpty()) {
+                coffeeDrinkArrayList.addAll(drinkArrayList.stream().filter(Drink::isCoffee).toList());
+            }
+            if (otherDrinkArrayList.isEmpty()) {
+                otherDrinkArrayList.addAll(drinkArrayList);
+                otherDrinkArrayList.removeAll(coffeeDrinkArrayList);
+            }
+            if (coffeeName.isEmpty()) {
+                coffeeDrinkArrayList.forEach(drink -> coffeeName.add(drink.getName()));
+            }
+            if (otherDrinkName.isEmpty()) {
+                otherDrinkArrayList.forEach(drink -> otherDrinkName.add(drink.getName()));
+            }
+            if (coffeeDrinkHashMap.isEmpty()) {
+                extractFromSet(coffeeName, coffeeDrinkArrayList, coffeeDrinkHashMap);
+            }
+            if (otherDrinkHashMap.isEmpty()) {
+                extractFromSet(otherDrinkName, otherDrinkArrayList, otherDrinkHashMap);
+            }
+
+        } catch (Exception e) {
+            log.error(e.getMessage() + " " + Arrays.toString(e.getStackTrace()));
+        }
+    }
+
+    private void extractFromSet(Set<String> drink,
+                                List<Drink> drinkList,
+                                HashMap<String, TreeSet<Drink>> drinkHashMap) {
+        drink.forEach(drinkHead -> {
+            final var coffeeSet = new TreeSet<>(drinkList.stream().filter(d -> d.getName().equals(drinkHead)).toList());
+            drinkHashMap.put(drinkHead, coffeeSet);
+        });
     }
 
     public void getBarista(Model model) {
@@ -107,92 +243,8 @@ public class DataProcessor {
         model.addAttribute("closeOrderLink", ClientEndpoint.CLOSE_ORDER);
     }
 
-    public void newOrder(Model model, String comment) {
-        ordering.setComment(comment);
-        model.addAttribute("orderID", getApi.sendOrder(coffeeRestConst.getNewOrderEndPoint(),
-                mapper.toOrderingDTO(ordering)));
-        try {
-            model.addAttribute("order", ordering.clone());
-        } catch (CloneNotSupportedException e) {
-            throw new RuntimeException(e);
-        }
-        model.addAttribute("mainPageLink", ClientEndpoint.MAIN_PAGE);
-        ordering.clear();
-    }
-
     public void closeOrder(int id) {
         getApi.sendOrder(coffeeRestConst.getCloseOrderEndPoint(), new OrderingDTO().setOrderId(id));
-    }
-
-    public void setMilk(int id) {
-        final var milk = milkArrayList.stream().filter(milk1 -> milk1.getId() == id).findFirst().orElse(new Milk());
-        if (ordering.getMilk() == null) {
-            ordering.setMilk(milk);
-            int price = ordering.getPrice();
-            ordering.setPrice(price + milk.getPrice());
-        } else {
-            final var beforeMilk = ordering.getMilk();
-            int price = ordering.getPrice();
-            if (beforeMilk.equals(milk)) {
-                ordering.setPrice(price - ordering.getMilk().getPrice());
-                ordering.setMilk(null);
-            } else {
-                ordering.setPrice(price - beforeMilk.getPrice() + milk.getPrice());
-                ordering.setMilk(milk);
-            }
-        }
-    }
-
-    public void setSyrup(int id) {
-        final var syrup = syrupArrayList.stream().filter(syrup1 -> syrup1.getId() == id).findFirst().orElse(new Syrup());
-        if (ordering.getSyrup() == null) {
-            ordering.setSyrup(syrup);
-            int price = ordering.getPrice();
-            ordering.setPrice(price + syrup.getPrice());
-        } else {
-            final var beforeSyrup = ordering.getSyrup();
-            int price = ordering.getPrice();
-            if (beforeSyrup.equals(syrup)) {
-                ordering.setPrice(price - ordering.getSyrup().getPrice());
-                ordering.setSyrup(null);
-            } else {
-                ordering.setPrice(price - beforeSyrup.getPrice() + syrup.getPrice());
-                ordering.setSyrup(syrup);
-            }
-        }
-    }
-
-    public void setDrink(int id) {
-        Drink drink = drinkArrayList.stream().filter(drink1 -> drink1.getId() == id).findFirst().orElse(new Drink());
-        if (ordering.getDrink() == null) {
-            ordering.setDrink(drink);
-            int price = ordering.getPrice();
-            ordering.setPrice(price + drink.getPrice());
-        } else {
-            int price = ordering.getPrice();
-            final var beforeDrink = ordering.getDrink();
-            if (beforeDrink.equals(drink)) {
-                ordering.setPrice(price - ordering.getDrink().getPrice());
-                ordering.setDrink(null);
-            } else {
-                ordering.setPrice(price - beforeDrink.getPrice() + drink.getPrice());
-                ordering.setDrink(drink);
-            }
-        }
-    }
-
-    public void setDessert(int id) {
-        final var dessert = dessertArrayList.stream().filter(dessert1 -> dessert1.getId() == id).findFirst().orElse(new Dessert());
-        if (dessertList.contains(dessert)) {
-            dessertList.remove(dessert);
-            int price = ordering.getPrice();
-            ordering.setPrice(price - dessert.getPrice());
-        } else {
-            dessertList.add(dessert);
-            int price = ordering.getPrice();
-            ordering.setPrice(price + dessert.getPrice());
-        }
-        ordering.setDesserts(dessertList);
     }
 
     private void loadData() {
@@ -207,41 +259,6 @@ public class DataProcessor {
                 orderingFalseArrayList.add(orderingDTO);
             }
         }
-    }
-
-    private void updateData() {
-        try {
-            syrupArrayList.addAll(getApi.getObjectList(coffeeRestConst.getAllSyrupEndPoint(), Syrup[].class));
-            dessertArrayList.addAll(getApi.getObjectList(coffeeRestConst.getAllDesertsEndPoint(), Dessert[].class));
-            drinkArrayList.addAll(getApi.getObjectList(coffeeRestConst.getAllDrinkEndPoint(), Drink[].class));
-            milkArrayList.addAll(getApi.getObjectList(coffeeRestConst.getAllMilkEndPoint(), Milk[].class));
-            coffeeDrinkArrayList.addAll(drinkArrayList.stream().filter(Drink::isCoffee).collect(Collectors.toList()));
-            otherDrinkArrayList.addAll(drinkArrayList);
-            otherDrinkArrayList.removeAll(coffeeDrinkArrayList);
-
-            coffeeDrinkArrayList.forEach(drink -> coffeeName.add(drink.getName()));
-            otherDrinkArrayList.forEach(drink -> otherDrinkName.add(drink.getName()));
-
-            extractFromSet(coffeeName, coffeeDrinkArrayList, coffeeDrinkHashMap);
-            extractFromSet(otherDrinkName, otherDrinkArrayList, otherDrinkHashMap);
-
-        } catch (Exception e) {
-            log.error(e.getMessage() + " " + Arrays.toString(e.getStackTrace()));
-        }
-    }
-
-    private void extractFromSet(Set<String> drink,
-                                List<Drink> drinkList,
-                                HashMap<String, TreeSet<Drink>> drinkHashMap) {
-        drink.forEach(s -> {
-            final var coffeeSet = new TreeSet<Drink>();
-            for (Drink d : drinkList) {
-                if (d.getName().equals(s)) {
-                    coffeeSet.add(d);
-                }
-            }
-            drinkHashMap.put(s, coffeeSet);
-        });
     }
 
 }

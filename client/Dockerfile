@@ -1,4 +1,4 @@
-FROM eclipse-temurin:17.0.8.1_1-jre-jammy
+FROM openjdk:17
 WORKDIR /opt/coffee-client/
 COPY build/libs/*1.jar coffee-client.jar
 EXPOSE 8081
