@@ -84,43 +84,43 @@
     </br>
     <div class="underCard">
         <div class="cardMain">
-            <div th:each="order:${orderFalseList}" class="card">
-                <form method="get" th:action="@{${closeOrderLink}(id = ${order.getId()})}">
+            <div th:each="cafeOrder:${orderFalseList}" class="card">
+                <form method="get" th:action="@{${closeOrderLink}(id = ${cafeOrder.getId()})}">
                     <button class="buttonCard">
                         <div style="width: 100%; display:table;">
                             <!--                            <div th:text="${card.isCheck() ? 'M' : space}"-->
                             <!--                                 style="display: table-cell; text-align: left; font-size: 10px;">-->
                             <!--                            </div>-->
-                            <div th:text="${order.giveDateOrder()}"
+                            <div th:text="${cafeOrder.giveDateOrder()}"
                                  style="display: table-cell; text-align: center; font-size: 10px;">
                             </div>
                         </div>
                         </br>
                         <div style="width: 100%; display:table;">
-                            <a th:text="${'Заказ: ' + order.getId()}"></a>
+                            <a th:text="${'Заказ: ' + cafeOrder.getId()}"></a>
                         </div>
-                        <h1 th:text="${order.getDrink()}" style="font-size: 18px;"></h1>
-                        <div th:if="${order.getMilk() != null}" th:text="${'Молоко: ' + order.getMilk()}"
+                        <h1 th:text="${cafeOrder.getDrink()}" style="font-size: 18px;"></h1>
+                        <div th:if="${cafeOrder.getMilk() != null}" th:text="${'Молоко: ' + cafeOrder.getMilk()}"
                              style="font-size: 10px;"></div>
-                        <div th:if="${order.getSyrup() != null}" th:text="${'Сироп: ' + order.getSyrup()}"
+                        <div th:if="${cafeOrder.getSyrup() != null}" th:text="${'Сироп: ' + cafeOrder.getSyrup()}"
                              style="font-size: 10px; margin: 7px; font-weight: bold;"></div>
-                        <div th:if="${order.getDessert() != null}">
+                        <div th:if="${cafeOrder.getDessert() != null}">
                             </br>
-                            <div th:text="${order.giveDessert()}"></div>
-                            <!--                            <div th:each="dessert:${order.getDessert()}">-->
+                            <div th:text="${cafeOrder.giveDessert()}"></div>
+                            <!--                            <div th:each="dessert:${cafeOrder.getDessert()}">-->
                             <!--                             <pre th:text="${dessert}"-->
                             <!--                                  style="font-size: 10px; margin: 7px; font-weight: bold;">-->
                             <!--                             </pre>-->
                             <!--                            </div>-->
                         </div>
                         <br>
-                        <div th:text="${order.getPrice() + ' руб.'}"
+                        <div th:text="${cafeOrder.getPrice() + ' руб.'}"
                              style="font-size: 10px; margin: 7px; font-weight: bold;"></div>
                         <br>
-                        <div th:text="${order.isStatus()}"
+                        <div th:text="${cafeOrder.isStatus()}"
                              style="font-size: 10px; margin: 7px; font-weight: bold;"></div>
-                        <div th:if="${order.getComment() != null}">
-                            <a th:text="${'К: ' + order.getComment()}"></a>
+                        <div th:if="${cafeOrder.getComment() != null}">
+                            <a th:text="${'К: ' + cafeOrder.getComment()}"></a>
                         </div>
                     </button>
                 </form>

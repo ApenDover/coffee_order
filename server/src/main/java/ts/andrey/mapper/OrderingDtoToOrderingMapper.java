@@ -7,8 +7,8 @@ import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.Named;
 import ts.andrey.common.dto.OrderingDTO;
-import ts.andrey.common.data.entity.Dessert;
-import ts.andrey.common.data.entity.Ordering;
+import ts.andrey.entity.CafeOrder;
+import ts.andrey.entity.Dessert;
 import ts.andrey.service.DessertService;
 import ts.andrey.service.DrinkService;
 import ts.andrey.service.MilkService;
@@ -31,8 +31,9 @@ public interface OrderingDtoToOrderingMapper {
     @Mapping(target = "price", ignore = true)
     @Mapping(target = "date", ignore = true)
     @Mapping(target = "dateReady", ignore = true)
-    Ordering toOrdering(OrderingDTO orderingDTO, @Context DessertService dessertService, @Context MilkService milkService,
-                        @Context SyrupService syrupService, @Context DrinkService drinkService);
+    @Mapping(target = "status", defaultValue = "false")
+    CafeOrder toOrdering(OrderingDTO orderingDTO, @Context DessertService dessertService, @Context MilkService milkService,
+                         @Context SyrupService syrupService, @Context DrinkService drinkService);
 
     @Named("IntegerArrayToListDessert")
     default List<Dessert> toIntegerArray(List<Integer> desserts, @Context DessertService dessertService) {
@@ -44,28 +45,27 @@ public interface OrderingDtoToOrderingMapper {
 
 
     @AfterMapping
-    default void countPrice(@MappingTarget Ordering ordering) {
+    default void countPrice(@MappingTarget CafeOrder cafeOrder) {
         int price = 0;
 
-        if (ordering.getDrink() != null) {
-            price += ordering.getDrink().getPrice();
+        if (cafeOrder.getDrink() != null) {
+            price += cafeOrder.getDrink().getPrice();
         }
-        if (ordering.getMilk() != null) {
-            price += ordering.getMilk().getPrice();
+        if (cafeOrder.getMilk() != null) {
+            price += cafeOrder.getMilk().getPrice();
         }
-        if (ordering.getSyrup() != null) {
-            price += ordering.getSyrup().getPrice();
+        if (cafeOrder.getSyrup() != null) {
+            price += cafeOrder.getSyrup().getPrice();
         }
-        if (ordering.getDesserts() != null) {
-            for (Dessert dessert : ordering.getDesserts()) {
+        if (cafeOrder.getDesserts() != null) {
+            for (Dessert dessert : cafeOrder.getDesserts()) {
                 price += dessert.getPrice();
             }
-            ordering.getDesserts().forEach(dessert -> {
-                dessert.setOrders(new ArrayList<>(Collections.singletonList(ordering)));
-            });
+            cafeOrder.getDesserts().forEach(dessert ->
+                    dessert.setCafeOrders(new ArrayList<>(Collections.singletonList(cafeOrder))));
         }
-        ordering.setPrice(price);
-        ordering.setDate(LocalDateTime.now());
+        cafeOrder.setPrice(price);
+        cafeOrder.setDate(LocalDateTime.now());
     }
 
 }

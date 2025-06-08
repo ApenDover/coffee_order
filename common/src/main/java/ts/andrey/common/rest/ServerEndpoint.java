@@ -7,9 +7,11 @@ public class ServerEndpoint {
 
     public static final String API = "/api";
 
-    public static final String ALL_TODAY_ORDERS = "/getAllTodayOrders";
+    public static final String GET_ALL_TODAY_ORDERS = "/getAllTodayOrders";
 
-    public static final String UPDATE_INFO = "/getUpdateInfo";
+    public static final String GET_ALL_ORDERS = "/getAllOrders";
+
+    public static final String GET_UPDATE_INFO = "/getUpdateInfo";
 
     public static final String MAKE_UPDATE_FALSE = "/makeUpdateFalse";
 

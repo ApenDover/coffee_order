@@ -80,6 +80,10 @@ project("server") {
         implementation 'io.micrometer:micrometer-registry-prometheus'
     }
 
+    pmd {
+        toolVersion = "6.55.0"
+    }
+
 }
 
 project("client") {
@@ -97,10 +101,13 @@ project("client") {
         implementation 'org.springframework.session:spring-session-core'
     }
 
+    pmd {
+        toolVersion = "6.55.0"
+    }
+
 }
 
 project("common") {
-
     bootJar {
         enabled = false
     }

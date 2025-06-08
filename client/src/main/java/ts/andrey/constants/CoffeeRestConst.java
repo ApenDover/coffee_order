@@ -42,10 +42,10 @@ public final class CoffeeRestConst {
         allSyrupEndPoint = url + ServerEndpoint.API + ServerEndpoint.SYRUP_LIST;
         allDesertsEndPoint = url + ServerEndpoint.API + ServerEndpoint.DESSERT_LIST;
         allDrinkEndPoint = url + ServerEndpoint.API + ServerEndpoint.DRINK_LIST;
-        allTodayOrderEndPoint = url + ServerEndpoint.API + ServerEndpoint.ALL_TODAY_ORDERS;
+        allTodayOrderEndPoint = url + ServerEndpoint.API + ServerEndpoint.GET_ALL_TODAY_ORDERS;
         newOrderEndPoint = url + ServerEndpoint.API + ServerEndpoint.NEW_ORDER;
         closeOrderEndPoint = url + ServerEndpoint.API + ServerEndpoint.CLOSE_ORDER;
-        updateInfoEndPoint = url + ServerEndpoint.API + ServerEndpoint.UPDATE_INFO;
+        updateInfoEndPoint = url + ServerEndpoint.API + ServerEndpoint.GET_UPDATE_INFO;
         makeUpdateFalseEndPoint = url + ServerEndpoint.API + ServerEndpoint.MAKE_UPDATE_FALSE;
         passwordForUserEndPoint = url + ServerEndpoint.API + ServerEndpoint.PASSWORD;
     }

@@ -34,17 +34,17 @@ public class MainController {
     @GetMapping(ClientEndpoint.NEW_ORDER)
     public String newOrder(Model model, @RequestParam("comment") String comment, HttpSession session) {
         log.info("{}: new order", session.getId());
-        if (getUserSession(session).getOrder().isEmpty()) {
+        if (getUserSession(session).getCafeOrder().isEmpty()) {
             return "redirect:/";
         }
         dataProcessor.newOrder(model, comment, getUserSession(session));
-        getUserSession(session).getOrder().clear();
+        getUserSession(session).getCafeOrder().clear();
         return "orderCreate";
     }
 
     @GetMapping(ClientEndpoint.CLOSE_ORDER)
     public String updateOrder(@PathVariable("id") int id, HttpSession session) {
-        getUserSession(session).getOrder().clear();
+        getUserSession(session).getCafeOrder().clear();
         dataProcessor.closeOrder(id);
         return "redirect:/barista";
     }

@@ -10,14 +10,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ts.andrey.common.data.entity.Dessert;
-import ts.andrey.common.data.entity.Drink;
-import ts.andrey.common.data.entity.Milk;
-import ts.andrey.common.data.entity.NewOrderCreate;
-import ts.andrey.common.data.entity.Ordering;
-import ts.andrey.common.data.entity.Syrup;
 import ts.andrey.common.dto.InOutOrderingDTO;
 import ts.andrey.common.dto.OrderingDTO;
+import ts.andrey.entity.CafeOrder;
+import ts.andrey.entity.Dessert;
+import ts.andrey.entity.Drink;
+import ts.andrey.entity.Milk;
+import ts.andrey.entity.NewOrderCreate;
+import ts.andrey.entity.Syrup;
 import ts.andrey.mapper.OrderingDtoToOrderingMapper;
 import ts.andrey.mapper.OrderingToOutOrderingDtoMapper;
 import ts.andrey.service.BaristaUserService;
@@ -32,12 +32,14 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 
-import static ts.andrey.common.rest.ServerEndpoint.ALL_TODAY_ORDERS;
 import static ts.andrey.common.rest.ServerEndpoint.API;
 import static ts.andrey.common.rest.ServerEndpoint.CLOSE_ORDER;
 import static ts.andrey.common.rest.ServerEndpoint.DESSERT_LIST;
 import static ts.andrey.common.rest.ServerEndpoint.DRINK_LIST;
+import static ts.andrey.common.rest.ServerEndpoint.GET_ALL_ORDERS;
+import static ts.andrey.common.rest.ServerEndpoint.GET_ALL_TODAY_ORDERS;
 import static ts.andrey.common.rest.ServerEndpoint.GET_ORDER_ID;
+import static ts.andrey.common.rest.ServerEndpoint.GET_UPDATE_INFO;
 import static ts.andrey.common.rest.ServerEndpoint.MAKE_UPDATE_FALSE;
 import static ts.andrey.common.rest.ServerEndpoint.MILK_LIST;
 import static ts.andrey.common.rest.ServerEndpoint.NEW_DESSERT;
@@ -47,7 +49,6 @@ import static ts.andrey.common.rest.ServerEndpoint.NEW_ORDER;
 import static ts.andrey.common.rest.ServerEndpoint.NEW_SYRUP;
 import static ts.andrey.common.rest.ServerEndpoint.PASSWORD;
 import static ts.andrey.common.rest.ServerEndpoint.SYRUP_LIST;
-import static ts.andrey.common.rest.ServerEndpoint.UPDATE_INFO;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -73,14 +74,25 @@ public class ServerController {
 
     private final OrderingToOutOrderingDtoMapper orderingToOutOrderingDtoMapper;
 
-    @GetMapping(ALL_TODAY_ORDERS)
+    @GetMapping(GET_ALL_ORDERS)
+    public List<InOutOrderingDTO> getAllOrders() {
+        final var orderList = orderService.findAll();
+        log.info("find all orders: {}", orderList.size());
+        return orderList.stream()
+                .map(orderingToOutOrderingDtoMapper::mapToDto)
+                .toList();
+    }
+
+    @GetMapping(GET_ALL_TODAY_ORDERS)
     public List<InOutOrderingDTO> getAllTodayOrders() {
         final var orderList = orderService.findToday();
         log.info("find all orders for today: {}", orderList.size());
-        return orderList.stream().map(orderingToOutOrderingDtoMapper::mapToDto).toList();
+        return orderList.stream()
+                .map(orderingToOutOrderingDtoMapper::mapToDto)
+                .toList();
     }
 
-    @GetMapping(UPDATE_INFO)
+    @GetMapping(GET_UPDATE_INFO)
     public List<NewOrderCreate> updateBarista() {
         return Collections.singletonList(newOrderCreateService.getNewOrderCreate());
     }
@@ -92,7 +104,7 @@ public class ServerController {
     }
 
     @GetMapping(GET_ORDER_ID)
-    public Ordering getOrder(@PathVariable int id) {
+    public CafeOrder getOrder(@PathVariable int id) {
         return orderService.findOne(id);
     }
 
@@ -119,9 +131,11 @@ public class ServerController {
     @PostMapping(NEW_ORDER)
     public ResponseEntity<Integer> newOrder(@RequestBody OrderingDTO orderDTO) {
         newOrderCreateService.makeTrue();
-        final var order = orderService.save(orderingDtoToOrderingMapper.toOrdering(orderDTO,
-                dessertService, milkService, syrupService, drinkService));
-        log.info("create a new order with id: {}", orderDTO.getOrderId());
+        final var cafeOrder = orderingDtoToOrderingMapper.toOrdering(
+                orderDTO, dessertService, milkService, syrupService, drinkService
+        );
+        final var order = orderService.save(cafeOrder);
+        log.info("create a new order with id: {}", order.getId());
         return new ResponseEntity<>(order.getId(), HttpStatus.OK);
     }
 

@@ -89,7 +89,7 @@ CREATE TABLE public.drink (
     name character varying(255),
     price integer,
     size integer,
-    coffee boolean
+    is_coffee boolean
 );
 
 
@@ -136,10 +136,11 @@ CREATE TABLE public.new_order_create (
 ALTER TABLE public.new_order_create OWNER TO postgres;
 
 --
--- Name: ordering; Type: TABLE; Schema: public; Owner: postgres
+-- Name: cafeOrder; Type: TABLE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE public.ordering (
+CREATE TABLE public.cafeOrder
+(
                                  id          integer NOT NULL,
                                  comment     character varying(255),
                                  date_create timestamp without time zone,
@@ -152,7 +153,7 @@ CREATE TABLE public.ordering (
 );
 
 
-ALTER TABLE public.ordering OWNER TO postgres;
+ALTER TABLE public.cafeOrder OWNER TO postgres;
 
 --
 -- Name: seq_barista_user; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -210,18 +211,18 @@ CREATE SEQUENCE public.seq_milk_id
 ALTER TABLE public.seq_milk_id OWNER TO postgres;
 
 --
--- Name: seq_ordering_id; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: seq_order_id; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
-CREATE SEQUENCE public.seq_ordering_id
+CREATE SEQUENCE public.seq_order_id
     START WITH 1
-    INCREMENT BY 1
+    INCREMENT BY 5
     NO MINVALUE
     NO MAXVALUE
     CACHE 1;
 
 
-ALTER TABLE public.seq_ordering_id OWNER TO postgres;
+ALTER TABLE public.seq_order_id OWNER TO postgres;
 
 --
 -- Name: seq_syrup_id; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -270,24 +271,10 @@ COPY public.dessert (id, name, price) FROM stdin;
 
 
 --
--- Data for Name: dessert_order; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-COPY public.dessert_order (order_id, dessert_id) FROM stdin;
-108	1
-108	2
-109	1
-109	2
-111	2
-116	1
-\.
-
-
---
 -- Data for Name: drink; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.drink (id, name, price, size, coffee) FROM stdin;
+COPY public.drink (id, name, price, size, is_coffee) FROM stdin;
 1	Латте	200	0	t
 2	Капучино	200	0	t
 3	Капучино	220	1	t
@@ -323,32 +310,6 @@ COPY public.milk (id, name, price) FROM stdin;
 7	классическое	0
 \.
 
-
---
--- Data for Name: new_order_create; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-COPY public.new_order_create (id, update, update_time) FROM stdin;
-1	f	2023-06-23 11:24:28.614
-\.
-
-
---
--- Data for Name: ordering; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-COPY public.ordering (id, comment, date_create, date_ready, price, status, drink_id, milk_id, syrup_id) FROM stdin;
-107		2023-05-23 20:35:03.158	2023-05-23 20:35:16.54	0	t	\N	\N	\N
-108		2023-05-23 20:35:24.917	2023-05-23 20:35:44.243	570	t	11	\N	\N
-109		2023-05-23 20:35:37.32	2023-05-23 20:35:45.251	510	t	14	\N	\N
-110		2023-05-23 20:42:11.931	2023-05-23 21:00:48.841	140	t	16	\N	\N
-111		2023-05-23 21:02:50.945	2023-05-23 21:03:19.895	480	t	9	\N	\N
-112		2023-05-23 22:24:30.253	2023-05-23 22:24:46.331	140	t	18	\N	\N
-113		2023-05-23 22:24:42.578	2023-05-23 22:24:46.941	0	t	\N	\N	\N
-114		2023-05-24 19:05:03.55	2023-05-24 19:05:11.656	180	t	9	\N	\N
-115		2023-05-24 19:06:15.095	2023-05-24 19:06:24.172	200	t	2	\N	\N
-116		2023-06-23 11:24:17.451	2023-06-23 11:24:28.538	270	t	11	\N	\N
-\.
 
 
 --
@@ -406,10 +367,10 @@ SELECT pg_catalog.setval('public.seq_milk_id', 7, true);
 
 
 --
--- Name: seq_ordering_id; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: seq_order_id; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.seq_ordering_id', 116, true);
+SELECT pg_catalog.setval('public.seq_order_id', 1, true);
 
 
 --
@@ -460,11 +421,11 @@ ALTER TABLE ONLY public.new_order_create
 
 
 --
--- Name: ordering ordering_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: cafeOrder order_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.ordering
-    ADD CONSTRAINT ordering_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY public.cafeOrder
+    ADD CONSTRAINT order_pkey PRIMARY KEY (id);
 
 
 --
@@ -476,10 +437,10 @@ ALTER TABLE ONLY public.syrup
 
 
 --
--- Name: ordering fk2u1oxj9kaf7v7tdcw9lrjjkpi; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: cafeOrder fk2u1oxj9kaf7v7tdcw9lrjjkpi; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.ordering
+ALTER TABLE ONLY public.cafeOrder
     ADD CONSTRAINT fk2u1oxj9kaf7v7tdcw9lrjjkpi FOREIGN KEY (syrup_id) REFERENCES public.syrup(id);
 
 
@@ -488,14 +449,14 @@ ALTER TABLE ONLY public.ordering
 --
 
 ALTER TABLE ONLY public.dessert_order
-    ADD CONSTRAINT fk3cus4btdrny1aomronm0glnwg FOREIGN KEY (order_id) REFERENCES public.ordering(id);
+    ADD CONSTRAINT fk3cus4btdrny1aomronm0glnwg FOREIGN KEY (order_id) REFERENCES public.cafeOrder(id);
 
 
 --
--- Name: ordering fkgnevg2us3oriwjck30jigjwit; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: cafeOrder fkgnevg2us3oriwjck30jigjwit; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.ordering
+ALTER TABLE ONLY public.cafeOrder
     ADD CONSTRAINT fkgnevg2us3oriwjck30jigjwit FOREIGN KEY (drink_id) REFERENCES public.drink(id);
 
 
@@ -508,10 +469,10 @@ ALTER TABLE ONLY public.dessert_order
 
 
 --
--- Name: ordering fkqm5r1lindvialrqi8k8vwhd8w; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: cafeOrder fkqm5r1lindvialrqi8k8vwhd8w; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.ordering
+ALTER TABLE ONLY public.cafeOrder
     ADD CONSTRAINT fkqm5r1lindvialrqi8k8vwhd8w FOREIGN KEY (milk_id) REFERENCES public.milk(id);
 
 

@@ -4,7 +4,8 @@ package ts.andrey.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ts.andrey.common.data.entity.Ordering;
+import ts.andrey.entity.CafeOrder;
+import ts.andrey.exception.CoffeeServerException;
 import ts.andrey.repositories.OrderRepository;
 
 import java.time.LocalDateTime;
@@ -15,13 +16,14 @@ import java.util.List;
 @Transactional
 public class OrderService {
 
+    public static final String ORDER_NAME = "Заказ";
     private final OrderRepository orderRepository;
 
-    public List<Ordering> findAll() {
+    public List<CafeOrder> findAll() {
         return orderRepository.findAll();
     }
 
-    public List<Ordering> findToday() {
+    public List<CafeOrder> findToday() {
         return orderRepository.findAllByDateAfter();
     }
 
@@ -29,13 +31,14 @@ public class OrderService {
         orderRepository.update(status, date, id);
     }
 
-    public Ordering findOne(int id) {
-        return orderRepository.findById(id).orElse(null);
+    public CafeOrder findOne(int id) {
+        return orderRepository.findById(id)
+                .orElseThrow(() -> new CoffeeServerException(ORDER_NAME, id));
     }
 
     @Transactional
-    public Ordering save(Ordering order) {
-        return orderRepository.save(order);
+    public CafeOrder save(CafeOrder cafeOrder) {
+        return orderRepository.save(cafeOrder);
     }
 
 }

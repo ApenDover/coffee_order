@@ -4,11 +4,10 @@ import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ts.andrey.common.data.entity.NewOrderCreate;
+import ts.andrey.entity.NewOrderCreate;
 import ts.andrey.repositories.NewOrderCreateRepository;
 
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -17,34 +16,36 @@ public class NewOrderCreateService {
 
     private final NewOrderCreateRepository newOrderCreateRepository;
 
-
-
     @PostConstruct
-    private NewOrderCreate giveIt() {
-        return newOrderCreateRepository.findById(1).orElse(null);
+    private NewOrderCreate getNewOrderCreateOrCreateThis() {
+        final var newOrderOpt = newOrderCreateRepository.findById(1);
+        if (newOrderOpt.isPresent()) {
+            return newOrderOpt.get();
+        }
+        final var newOrder = new NewOrderCreate()
+                .setId(1)
+                .setUpdateTime(LocalDateTime.now())
+                .setUpdate(false);
+        return newOrderCreateRepository.save(newOrder);
     }
 
     public NewOrderCreate getNewOrderCreate() {
-        checkIt();
-        return giveIt();
+        return getNewOrderCreateOrCreateThis();
     }
 
     @Transactional
     public void makeTrue() {
-        checkIt();
-        newOrderCreateRepository.save(giveIt().setUpdate(true).setUpdateTime(LocalDateTime.now()));
+        final var createdOrder = getNewOrderCreateOrCreateThis().setUpdate(true)
+                .setUpdateTime(LocalDateTime.now());
+        newOrderCreateRepository.save(createdOrder);
     }
 
     @Transactional
     public void makeFalse() {
-        checkIt();
-        newOrderCreateRepository.save(giveIt().setUpdate(false).setUpdateTime(LocalDateTime.now()));
-    }
-
-    private void checkIt() {
-        if (Objects.isNull(giveIt())) {
-            newOrderCreateRepository.save(new NewOrderCreate().setId(1).setUpdateTime(LocalDateTime.now()).setUpdate(false));
-        }
+        final var newOrderCreate = getNewOrderCreateOrCreateThis()
+                .setUpdate(false)
+                .setUpdateTime(LocalDateTime.now());
+        newOrderCreateRepository.save(newOrderCreate);
     }
 
 }

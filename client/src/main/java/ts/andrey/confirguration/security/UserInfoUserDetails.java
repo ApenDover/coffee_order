@@ -15,7 +15,7 @@ import java.util.Collections;
 @Setter
 public class UserInfoUserDetails implements UserDetails {
 
-    public static final long serialVersionUID = 12345L;
+    public static final long serialVersionUID = 1L;
 
     private User user;
 

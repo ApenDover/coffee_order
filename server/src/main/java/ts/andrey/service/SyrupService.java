@@ -3,7 +3,8 @@ package ts.andrey.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ts.andrey.common.data.entity.Syrup;
+import ts.andrey.entity.Syrup;
+import ts.andrey.exception.CoffeeServerException;
 import ts.andrey.repositories.SyrupRepository;
 
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.List;
 @Transactional
 public class SyrupService {
 
+    private static final String SYRUP_NAME = "Сироп";
     private final transient SyrupRepository syrupRepository;
 
     @Autowired
@@ -24,7 +26,8 @@ public class SyrupService {
     }
 
     public Syrup findOne(int id) {
-        return syrupRepository.findById(id).orElse(null);
+        return syrupRepository.findById(id)
+                .orElseThrow(() -> new CoffeeServerException(SYRUP_NAME, id));
     }
 
     @Transactional

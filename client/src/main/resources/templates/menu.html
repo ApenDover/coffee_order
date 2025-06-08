@@ -53,7 +53,7 @@
             width: 80px;
         }
 
-        .order {
+        .cafeOrder {
             margin-left: 20px;
             margin-right: 20px;
             padding: 10px;
@@ -111,7 +111,7 @@
                 </div>
             </div>
             </br>
-            <div class="menupoint" th:if="${order.getDrink()?.isCoffee()}">
+            <div class="menupoint" th:if="${cafeOrder.getDrink()?.getIsCoffee()}">
                 <a>Молоко:</a>
                 <div th:each="milk : ${milkList}">
                     <!--                    <form method="post" action="/milk" style="display: inline;">-->
@@ -128,7 +128,7 @@
                 </div>
                 </br>
             </div>
-            <div class="menupoint" th:if="${order.getDrink()?.isCoffee()}">
+            <div class="menupoint" th:if="${cafeOrder.getDrink()?.getIsCoffee()}">
                 <a>Сироп:</a>
                 <div th:each="syrup : ${syrupList}">
                     <form method="get" th:action="@{${setSyrupLink}(id=${syrup.getId()})}" style="display: inline;">
@@ -160,40 +160,40 @@
                 </div>
             </div>
         </div>
-        <div class="order">
-            <div class="drink" th:if="${order.getDrink() != null}">
-                <div th:if="${order.getDrink().getName() != null}">
+        <div class="cafeOrder">
+            <div class="drink" th:if="${cafeOrder.getDrink() != null}">
+                <div th:if="${cafeOrder.getDrink().getName() != null}">
                     <a>Напиток:</a>
-                    <a th:text="${order?.getDrink()?.getName() + ' - ' + order?.getDrink()?.getPrice()}"></a>
+                    <a th:text="${cafeOrder?.getDrink()?.getName() + ' - ' + cafeOrder?.getDrink()?.getPrice()}"></a>
                     </br>
                 </div>
             </div>
 
-            <div class="milk" th:if="${order.getMilk() != null}">
-                <div th:if="${order.getMilk().getName() != null}">
+            <div class="milk" th:if="${cafeOrder.getMilk() != null}">
+                <div th:if="${cafeOrder.getMilk().getName() != null}">
                     <a>Молоко:</a>
-                    <a th:text="${order?.getMilk()?.getName() + ' - ' + order?.getMilk()?.getPrice()}"></a>
+                    <a th:text="${cafeOrder?.getMilk()?.getName() + ' - ' + cafeOrder?.getMilk()?.getPrice()}"></a>
                     </br>
                 </div>
             </div>
 
-            <div class="syrup" th:if="${order.getSyrup() != null}">
-                <div th:if="${order.getSyrup().getName() != null}">
+            <div class="syrup" th:if="${cafeOrder.getSyrup() != null}">
+                <div th:if="${cafeOrder.getSyrup().getName() != null}">
                     <a>Сироп:</a>
-                    <a th:text="${order?.getSyrup?.getName() + ' - ' + order?.getSyrup()?.getPrice()}"></a>
+                    <a th:text="${cafeOrder?.getSyrup?.getName() + ' - ' + cafeOrder?.getSyrup()?.getPrice()}"></a>
                     </br>
                 </div>
             </div>
-            <div th:if="${not #lists.isEmpty(order?.getDesserts())}" class="dessert">
+            <div th:if="${not #lists.isEmpty(cafeOrder?.getDesserts())}" class="dessert">
                 <a>Десерт:</a>
-                <div th:each="dessert : ${order.getDesserts()}">
+                <div th:each="dessert : ${cafeOrder.getDesserts()}">
                     <a th:text="${dessert.getName() + ' - ' + dessert.getPrice()}"></a>
                 </div>
             </div>
             <br>
             <div class="price">
                 <a>Цена:</a>
-                <a th:text="${order?.getPrice()}"></a>
+                <a th:text="${cafeOrder?.getPrice()}"></a>
             </div>
         </div>
         <div class="makeOrder">

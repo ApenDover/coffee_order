@@ -9,7 +9,7 @@ import java.util.Objects;
 @Data
 public class InOutOrderingDTO implements Comparable<InOutOrderingDTO> {
 
-    private int id;
+    private Integer id;
 
     private String drink;
 
@@ -19,7 +19,7 @@ public class InOutOrderingDTO implements Comparable<InOutOrderingDTO> {
 
     private List<String> dessert;
 
-    private int price;
+    private Integer price;
 
     private boolean status;
 
@@ -34,11 +34,10 @@ public class InOutOrderingDTO implements Comparable<InOutOrderingDTO> {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof InOutOrderingDTO)) {
+        if (!(o instanceof InOutOrderingDTO that)) {
             return false;
         }
-        InOutOrderingDTO that = (InOutOrderingDTO) o;
-        return getId() == that.getId();
+        return getId().equals(that.getId());
     }
 
     @Override

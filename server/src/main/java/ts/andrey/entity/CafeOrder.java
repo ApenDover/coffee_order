@@ -1,4 +1,4 @@
-package ts.andrey.common.data.entity;
+package ts.andrey.entity;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -12,36 +12,44 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
-import jakarta.persistence.Table;
-import lombok.Data;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import lombok.experimental.Accessors;
+import org.hibernate.proxy.HibernateProxy;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
-@Data
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
 @Accessors(chain = true)
 @Entity
-@Table(name = "ordering")
-public class Ordering implements Cloneable {
+public class CafeOrder {
 
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "orderingSequence")
-    @SequenceGenerator(name = "orderingSequence", sequenceName = "seq_ordering_id", allocationSize = 1)
-    private int id;
+    @SequenceGenerator(name = "orderingSequence", sequenceName = "seq_order_id", allocationSize = 5)
+    private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "drink_id", referencedColumnName = "id")
+    @ToString.Exclude
     private Drink drink;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "milk_id", referencedColumnName = "id")
+    @ToString.Exclude
     private Milk milk;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "syrup_id", referencedColumnName = "id")
+    @ToString.Exclude
     private Syrup syrup;
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -49,11 +57,12 @@ public class Ordering implements Cloneable {
             name = "dessert_order",
             joinColumns = @JoinColumn(name = "order_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "dessert_id", referencedColumnName = "id"))
+    @ToString.Exclude
     private List<Dessert> desserts;
 
-    private int price;
+    private Integer price;
 
-    private boolean status;
+    private Boolean status;
 
     @Column(name = "date_create")
     private LocalDateTime date;
@@ -63,11 +72,7 @@ public class Ordering implements Cloneable {
 
     private String comment;
 
-    @Override
-    public Ordering clone() throws CloneNotSupportedException {
-        return (Ordering) super.clone();
-    }
-
+    @SuppressWarnings("PMD.NullAssignment")
     public void clear() {
         this.id = 0;
         this.drink = null;
@@ -81,8 +86,32 @@ public class Ordering implements Cloneable {
         this.comment = "";
     }
 
-    public boolean isEmpty() {
-        return Objects.isNull(this.drink) && Objects.isNull(this.desserts);
+    @Override
+    public final boolean equals(Object object) {
+        if (this == object) {
+            return true;
+        }
+        if (object == null) {
+            return false;
+        }
+        Class<?> oEffectiveClass = object instanceof HibernateProxy
+                ? ((HibernateProxy) object).getHibernateLazyInitializer().getPersistentClass()
+                : object.getClass();
+        Class<?> thisEffectiveClass = this instanceof HibernateProxy
+                ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass()
+                : this.getClass();
+        if (thisEffectiveClass != oEffectiveClass) {
+            return false;
+        }
+        final var that = (CafeOrder) object;
+        return getId() != null && Objects.equals(getId(), that.getId());
+    }
+
+    @Override
+    public final int hashCode() {
+        return this instanceof HibernateProxy
+                ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode()
+                : getClass().hashCode();
     }
 
 }

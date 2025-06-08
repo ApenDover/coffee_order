@@ -51,7 +51,7 @@
             width: 80px;
         }
 
-        .order {
+        .cafeOrder {
             margin: 20px;
             padding: 10px;
             background: cadetblue;
@@ -70,25 +70,25 @@
             <a th:text="${'Номер заказа: ' + orderID}"></a>
         </div>
         <div>
-            <div th:if="${order.getDrink() != null}">
-                <a th:text="${'Напиток: ' + order.getDrink().getName()}"></a>
+            <div th:if="${cafeOrder.getDrink() != null}">
+                <a th:text="${'Напиток: ' + cafeOrder.getDrink().getName()}"></a>
             </div>
-            <div th:if="${order.getMilk() != null}">
-                <a th:text="${'Молоко: ' + order.getMilk()?.getName()}"></a>
+            <div th:if="${cafeOrder.getMilk() != null}">
+                <a th:text="${'Молоко: ' + cafeOrder.getMilk()?.getName()}"></a>
             </div>
-            <div th:if="${order.getSyrup() != null}">
-                <a th:text="${'Сироп: ' + order.getSyrup()?.getName()}"></a>
+            <div th:if="${cafeOrder.getSyrup() != null}">
+                <a th:text="${'Сироп: ' + cafeOrder.getSyrup()?.getName()}"></a>
             </div>
-            <div th:if="${order.getDesserts() != null}">
+            <div th:if="${cafeOrder.getDesserts() != null}">
                 <a>Десерты: </a>
-<!--                <a th:text="${order.getDesserts()}"></a>-->
-                <a th:each="dessert : ${order.getDesserts()}" th:text="${dessert.getName() + ' '}"></a>
+                <!--                <a th:text="${cafeOrder.getDesserts()}"></a>-->
+                <a th:each="dessert : ${cafeOrder.getDesserts()}" th:text="${dessert.getName() + ' '}"></a>
             </div>
         </div>
         <div>
-            <a th:text="${'К оплате: ' + order.getPrice()}"></a>
+            <a th:text="${'К оплате: ' + cafeOrder.getPrice()}"></a>
             </br>
-            <a th:text="${'Комментарий: ' + order.getComment()}"></a>
+            <a th:text="${'Комментарий: ' + cafeOrder.getComment()}"></a>
         </div>
         <div>
             <form method="get" th:action="@{${mainPageLink}}">

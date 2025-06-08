@@ -5,19 +5,18 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
-import ts.andrey.common.data.entity.Dessert;
-import ts.andrey.common.data.entity.Drink;
-import ts.andrey.common.data.entity.Milk;
-import ts.andrey.common.data.entity.NewOrderCreate;
-import ts.andrey.common.data.entity.Syrup;
 import ts.andrey.common.dto.OrderingDTO;
 import ts.andrey.constants.CoffeeRestConst;
+import ts.andrey.data.Dessert;
+import ts.andrey.data.Drink;
+import ts.andrey.data.Milk;
+import ts.andrey.data.NewOrderCreate;
+import ts.andrey.data.Syrup;
 import ts.andrey.dto.InOutOrderingDTOView;
 import ts.andrey.mapper.OrderingToOrderingDtoMapper;
 import ts.andrey.rest.ClientEndpoint;
 import ts.andrey.rest.UserSession;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -74,7 +73,7 @@ public class DataProcessor {
         model.addAttribute("coffeeDrinkHashMap", coffeeDrinkHashMap);
         model.addAttribute("otherDrinkHashMap", otherDrinkHashMap);
         model.addAttribute("dessertList", dessertArrayList);
-        model.addAttribute("order", userSession.getOrder());
+        model.addAttribute("cafeOrder", userSession.getCafeOrder());
         model.addAttribute("setDrinkLink", ClientEndpoint.SET_DRINK);
         model.addAttribute("setMilkLink", ClientEndpoint.SET_MILK);
         model.addAttribute("setSyrupLink", ClientEndpoint.SET_SYRUP);
@@ -84,8 +83,11 @@ public class DataProcessor {
     }
 
     public void setDrink(int id, UserSession userSession) {
-        final var drink = drinkArrayList.stream().filter(drink1 -> drink1.getId() == id).findFirst().orElseThrow();
-        final var ordering = userSession.getOrder();
+        final var drink = drinkArrayList.stream()
+                .filter(drink1 -> drink1.getId() == id)
+                .findFirst()
+                .orElseThrow();
+        final var ordering = userSession.getCafeOrder();
         if (ordering.getDrink() == null) {
             ordering.setDrink(drink);
             int price = ordering.getPrice();
@@ -104,7 +106,7 @@ public class DataProcessor {
     }
 
     public void setMilk(int id, UserSession userSession) {
-        final var ordering = userSession.getOrder();
+        final var ordering = userSession.getCafeOrder();
         final var milk = milkArrayList.stream().filter(milk1 -> milk1.getId() == id).findFirst().orElse(new Milk());
         if (ordering.getMilk() == null) {
             ordering.setMilk(milk);
@@ -124,7 +126,7 @@ public class DataProcessor {
     }
 
     public void setSyrup(int id, UserSession userSession) {
-        final var ordering = userSession.getOrder();
+        final var ordering = userSession.getCafeOrder();
         final var syrup = syrupArrayList.stream().filter(syrup1 -> syrup1.getId() == id).findFirst().orElse(new Syrup());
         if (ordering.getSyrup() == null) {
             ordering.setSyrup(syrup);
@@ -144,7 +146,7 @@ public class DataProcessor {
     }
 
     public void setDessert(int id, UserSession userSession) {
-        final var ordering = userSession.getOrder();
+        final var ordering = userSession.getCafeOrder();
         final var dessert = dessertArrayList.stream().filter(dessert1 -> dessert1.getId() == id).findFirst().orElse(new Dessert());
         if (dessertList.contains(dessert)) {
             dessertList.remove(dessert);
@@ -159,12 +161,13 @@ public class DataProcessor {
     }
 
     public void newOrder(Model model, String comment, UserSession userSession) {
-        final var ordering = userSession.getOrder();
+        final var ordering = userSession.getCafeOrder();
         ordering.setComment(comment);
-        model.addAttribute("orderID", getApi.sendOrder(coffeeRestConst.getNewOrderEndPoint(),
-                mapper.toOrderingDTO(ordering)));
+        final var orderRequest = mapper.toOrderingDTO(ordering);
+        final var order = getApi.sendOrder(coffeeRestConst.getNewOrderEndPoint(), orderRequest);
+        model.addAttribute("orderID", order);
         try {
-            model.addAttribute("order", ordering.clone());
+            model.addAttribute("cafeOrder", ordering.clone());
         } catch (CloneNotSupportedException e) {
             throw new RuntimeException(e);
         }
@@ -187,7 +190,9 @@ public class DataProcessor {
                 milkArrayList.addAll(getApi.getObjectList(coffeeRestConst.getAllMilkEndPoint(), Milk[].class));
             }
             if (coffeeDrinkArrayList.isEmpty()) {
-                coffeeDrinkArrayList.addAll(drinkArrayList.stream().filter(Drink::isCoffee).toList());
+                coffeeDrinkArrayList.addAll(drinkArrayList.stream()
+                        .filter(Drink::getIsCoffee)
+                        .toList());
             }
             if (otherDrinkArrayList.isEmpty()) {
                 otherDrinkArrayList.addAll(drinkArrayList);
@@ -207,7 +212,7 @@ public class DataProcessor {
             }
 
         } catch (Exception e) {
-            log.error(e.getMessage() + " " + Arrays.toString(e.getStackTrace()));
+            log.error(e.getMessage(), e);
         }
     }
 

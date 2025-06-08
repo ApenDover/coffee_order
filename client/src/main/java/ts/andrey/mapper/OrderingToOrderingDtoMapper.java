@@ -3,9 +3,9 @@ package ts.andrey.mapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
-import ts.andrey.common.data.entity.Dessert;
-import ts.andrey.common.data.entity.Ordering;
 import ts.andrey.common.dto.OrderingDTO;
+import ts.andrey.data.CafeOrder;
+import ts.andrey.data.Dessert;
 
 import java.util.Collections;
 import java.util.List;
@@ -18,7 +18,7 @@ public interface OrderingToOrderingDtoMapper {
     @Mapping(source = "drink.id", target = "drinkId")
     @Mapping(source = "syrup.id", target = "syrupId")
     @Mapping(source = "desserts", target = "dessertsId", qualifiedByName = "ToIntegerArray")
-    OrderingDTO toOrderingDTO(Ordering ordering);
+    OrderingDTO toOrderingDTO(CafeOrder cafeOrder);
 
     @Named("ToIntegerArray")
     default List<Integer> toIntegerArray(List<Dessert> desserts) {

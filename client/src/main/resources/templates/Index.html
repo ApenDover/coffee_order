@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Index</title>
+    <style>
+
+        .menu {
+            margin: 20px;
+            color: whitesmoke;
+            font-family: sans-serif;
+            font-size: 20px;
+        }
+
+        .menupoint {
+            margin-left: 10px;
+            margin-right: 10px;
+        }
+
+        .posmenu {
+            width: auto;
+            margin-bottom: 10px;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        }
+
+        .parent {
+            background: #2b2b2b;
+            width: 100%;
+            height: 100%;
+            padding-top: 200px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            overflow: auto;
+        }
+
+        .block {
+            padding-top: 20px;
+            background: #111111;
+            width: auto;
+            position: absolute;
+            align-content: center;
+            left: 46%;
+            margin: -125px 0 0 -125px;
+        }
+
+        .option {
+            font-size: 12pt;
+            width: 200px;
+        }
+
+        .drinkMenu {
+            padding: 10px;
+            border: none;
+            border-radius: 10px;
+            background-color: #3c3f41; /* Цвет кнопки заказа */
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-size: 20pt;
+            width: 80px;
+        }
+
+        .drinkMenu:hover {
+            background-color: #4CAF50; /* меняем цвет при наведении */
+        }
+
+        .cafeOrder {
+            margin-left: 20px;
+            margin-right: 20px;
+            padding: 10px;
+            background: cadetblue;
+        }
+
+        a {
+            padding: 20px;
+        }
+
+        .makeOrder {
+            padding-left: 20px;
+            padding-right: 20px;
+            padding-bottom: 10px;
+        }
+
+    </style>
+</head>
+<body>
+<div class="parent">
+    <div class="block">
+        <div class="menu">
+            <div class="menupoint">
+                <!--                <a>Напиток:</a>-->
+                <!--                </br>-->
+                <div>
+                    <div class="posmenu">
+                        <div>
+                            <a>Латте</a>
+                        </div>
+                        <div>
+                            <form method="get"
+                                  action="/drink/1"
+                                  style="display: inline;">
+                                <input class="drinkMenu" type="submit" value="200">
+                            </form>
+                            <form method="get"
+                                  action="/drink/4"
+                                  style="display: inline;">
+                                <input class="drinkMenu" type="submit" value="220">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="posmenu">
+                        <div>
+                            <a>Капучино</a>
+                        </div>
+                        <div>
+                            <form method="get"
+                                  action="/drink/2"
+                                  style="display: inline;">
+                                <input class="drinkMenu" type="submit" value="200">
+                            </form>
+                            <form method="get"
+                                  action="/drink/3"
+                                  style="display: inline;">
+                                <input class="drinkMenu" type="submit" value="220">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="posmenu">
+                        <div>
+                            <a>Американо</a>
+                        </div>
+                        <div>
+                            <form method="get"
+                                  action="/drink/5"
+                                  style="display: inline;">
+                                <input class="drinkMenu" type="submit" value="150">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="posmenu">
+                        <div>
+                            <a>Флэт уайт</a>
+                        </div>
+                        <div>
+                            <form method="get"
+                                  action="/drink/6"
+                                  style="display: inline;">
+                                <input class="drinkMenu" type="submit" value="200">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="posmenu">
+                        <div>
+                            <a>Раф</a>
+                        </div>
+                        <div>
+                            <form method="get"
+                                  action="/drink/7"
+                                  style="display: inline;">
+                                <input class="drinkMenu" type="submit" value="220">
+                            </form>
+                            <form method="get"
+                                  action="/drink/8"
+                                  style="display: inline;">
+                                <input class="drinkMenu" type="submit" value="250">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="menupoint">
+                <div>
+                    <div class="posmenu">
+                        <div>
+                            <a>Черный чай</a>
+                        </div>
+                        <div>
+                            <form method="get"
+                                  action="/drink/15" style="display: inline;">
+                                <input class="drinkMenu" type="submit" value="120">
+                            </form>
+                            <form method="get"
+                                  action="/drink/16" style="display: inline;">
+                                <input class="drinkMenu" type="submit" value="140">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="posmenu">
+                        <div>
+                            <a>Зеленый чай</a>
+                        </div>
+                        <div>
+                            <form method="get"
+                                  action="/drink/13" style="display: inline;">
+                                <input class="drinkMenu" type="submit" value="120">
+                            </form>
+                            <form method="get"
+                                  action="/drink/14" style="display: inline;">
+                                <input class="drinkMenu" type="submit" value="140">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="posmenu">
+                        <div>
+                            <a>Облепиховый чай</a>
+                        </div>
+                        <div>
+                            <form method="get"
+                                  action="/drink/17" style="display: inline;">
+                                <input class="drinkMenu" type="submit" value="120">
+                            </form>
+                            <form method="get"
+                                  action="/drink/18" style="display: inline;">
+                                <input class="drinkMenu" type="submit" value="140">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="posmenu">
+                        <div>
+                            <a>Чай латте</a>
+                        </div>
+                        <div>
+                            <form method="get"
+                                  action="/drink/9" style="display: inline;">
+                                <input class="drinkMenu" type="submit" value="180">
+                            </form>
+                            <form method="get"
+                                  action="/drink/10" style="display: inline;">
+                                <input class="drinkMenu" type="submit" value="200">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="posmenu">
+                        <div>
+                            <a>Какао</a>
+                        </div>
+                        <div>
+                            <form method="get"
+                                  action="/drink/11" style="display: inline;">
+                                <input class="drinkMenu" type="submit" value="200">
+                            </form>
+                            <form method="get"
+                                  action="/drink/12" style="display: inline;">
+                                <input class="drinkMenu" type="submit" value="220">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </br>
+
+
+            <div class="menupoint">
+                <a>Десерт:</a>
+                <div>
+                    <form method="get" action="/dessert/1" style="display: inline;">
+                        <div class="posmenu">
+                            <div>
+                                <input class="option" type="submit" value="Twix">
+                            </div>
+                            <div>
+                                <a>70</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div>
+                    <form method="get" action="/dessert/2" style="display: inline;">
+                        <div class="posmenu">
+                            <div>
+                                <input class="option" type="submit" value="pie">
+                            </div>
+                            <div>
+                                <a>300</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="cafeOrder">
+
+
+            <br>
+            <div class="price">
+                <a>Цена:</a>
+                <a>0</a>
+            </div>
+        </div>
+        <div class="makeOrder">
+            <form method="get" action="/newOrder" style="display: inline; padding: 20px;">
+                <div>
+                    <input type="text" name="comment" id="comment" placeholder="Комментарий"
+                           style="width: -webkit-fill-available;">
+                </div>
+                <input type="submit" value="ЗАКАЗАТЬ" style="width: 100%; height: 100px; margin-top: 15px;">
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

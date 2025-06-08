@@ -1,22 +1,25 @@
-package ts.andrey.common.data.entity;
+package ts.andrey.data;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import lombok.experimental.Accessors;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Data
+@RequiredArgsConstructor
 @Accessors(chain = true)
-@Entity
-public class NewOrderCreate {
+public class NewOrderCreate implements Serializable {
+
+    public static final long serialVersionUID = 1L;
 
     @Id
-    private int id;
+    private Integer id;
 
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @Column(name = "update_time")

@@ -9,17 +9,17 @@ import java.util.List;
 @Accessors(chain = true)
 public class OrderingDTO {
 
-    private int orderId;
+    private Integer orderId;
 
-    private int milkId;
+    private Integer milkId;
 
-    private int drinkId;
+    private Integer drinkId;
 
-    private int syrupId;
+    private Integer syrupId;
 
     private List<Integer> dessertsId;
 
-    private boolean status;
+    private Boolean status;
 
     private String comment;
 

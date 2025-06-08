@@ -2,7 +2,7 @@ package ts.andrey.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import ts.andrey.common.data.entity.BaristaUser;
+import ts.andrey.entity.BaristaUser;
 
 import java.util.List;
 

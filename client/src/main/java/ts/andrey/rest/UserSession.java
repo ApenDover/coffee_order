@@ -2,12 +2,16 @@ package ts.andrey.rest;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import ts.andrey.common.data.entity.Ordering;
+import ts.andrey.data.CafeOrder;
+
+import java.io.Serializable;
 
 @RequiredArgsConstructor
 @Data
-public class UserSession {
+public class UserSession implements Serializable {
 
-    private final Ordering order;
+    public static final long serialVersionUID = 1L;
+
+    private final CafeOrder cafeOrder;
 
 }
