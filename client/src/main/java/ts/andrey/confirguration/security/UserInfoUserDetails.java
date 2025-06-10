@@ -5,7 +5,7 @@ import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
-import ts.andrey.common.dto.User;
+import ts.andrey.data.User;
 
 import java.util.Collection;
 import java.util.Collections;

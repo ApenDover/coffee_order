@@ -14,6 +14,7 @@ public class ClientEndpoint {
     public static final String NEW_ORDER = "/newOrder";
 
     public static final String CLOSE_ORDER = "/closeOrder/{id}";
+
     public static final String SET_MILK = "/milk/{id}";
 
     public static final String SET_SYRUP = "/syrup/{id}";

@@ -8,7 +8,7 @@ import ts.andrey.entity.CafeOrder;
 import ts.andrey.exception.CoffeeServerException;
 import ts.andrey.repositories.OrderRepository;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 @Service
@@ -27,7 +27,7 @@ public class OrderService {
         return orderRepository.findAllByDateAfter();
     }
 
-    public void update(boolean status, LocalDateTime date, int id) {
+    public void update(boolean status, OffsetDateTime date, int id) {
         orderRepository.update(status, date, id);
     }
 

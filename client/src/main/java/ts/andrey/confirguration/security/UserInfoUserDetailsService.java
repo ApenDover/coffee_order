@@ -1,17 +1,16 @@
 package ts.andrey.confirguration.security;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
-import ts.andrey.common.dto.User;
-import ts.andrey.common.utility.FixUrl;
-import ts.andrey.constants.CoffeeRestConst;
+import ts.andrey.data.User;
 import ts.andrey.service.GetApi;
 
-import java.util.Optional;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class UserInfoUserDetailsService implements UserDetailsService {
@@ -20,20 +19,19 @@ public class UserInfoUserDetailsService implements UserDetailsService {
 
     private final GetApi getApi;
 
-    private final CoffeeRestConst coffeeRestConst;
-
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<String> password = getApi.getPassword(FixUrl.enterParamsIfNeed(coffeeRestConst
-                .getPasswordForUserEndPoint(), username), username);
-        if (password.isPresent()) {
+        try {
+            final var password = getApi.getPassword(username);
             userInfoUserDetails.setUser(User.builder()
                     .name(username)
-                    .password(addSoltToPassword(password.get()))
+                    .password(addSoltToPassword(password))
                     .build());
             return userInfoUserDetails;
+        } catch (Exception e) {
+            log.error("getPassword api error", e);
+            throw new UsernameNotFoundException("user not found " + username);
         }
-        throw new UsernameNotFoundException("user not found " + username);
     }
 
     private String addSoltToPassword(String password) {

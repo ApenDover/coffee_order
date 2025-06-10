@@ -1,116 +1,24 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '3.2.0'
-    id 'io.spring.dependency-management' version '1.1.4'
+    id 'org.springframework.boot' version '3.5.0'
+    id 'io.spring.dependency-management' version '1.1.7'
 }
 
 allprojects {
+    group = 'ts.andrey'
+    version = '0.1'
+
     repositories {
         mavenLocal()
         mavenCentral()
     }
 }
 
-group = 'ts.andrey'
-
-jar {
-    enabled = false
-}
-
-tasks.build {
-    enabled = false
-}
-
 bootJar {
     enabled = false
 }
 
-subprojects {
-
-    apply plugin: 'java'
-    apply plugin: 'org.springframework.boot'
-    apply plugin: 'io.spring.dependency-management'
-    apply plugin: 'groovy'
-    apply plugin: 'checkstyle'
-    apply plugin: 'pmd'
-
-    group = 'ts.andrey'
-    version = '0.1'
-    sourceCompatibility = '17'
-
-    java.sourceCompatibility(JavaVersion.VERSION_17)
-
-    dependencies {
-        implementation 'org.mapstruct:mapstruct:1.5.5.Final'
-        annotationProcessor 'org.projectlombok:lombok'
-        compileOnly 'org.projectlombok:lombok'
-        annotationProcessor "org.mapstruct:mapstruct-processor:1.5.5.Final"
-        implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-        implementation group: 'com.vaadin.external.google', name: 'android-json', version: '0.0.20131108.vaadin1'
-        implementation 'org.springframework.boot:spring-boot-starter-web'
-        implementation 'org.springframework.boot:spring-boot-starter-webflux'
-        testImplementation 'org.springframework.boot:spring-boot-starter-test'
-        testImplementation 'io.projectreactor:reactor-test'
-        implementation group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5'
-    }
-
-    configurations {
-        compileOnly {
-            extendsFrom annotationProcessor
-        }
-    }
-
-    tasks.named('test') {
-        useJUnitPlatform()
-    }
-}
-
-project("server") {
-
-    sourceCompatibility = '17'
-
-    bootJar {
-        launchScript()
-    }
-
-    dependencies {
-        implementation project(':common')
-        runtimeOnly 'org.postgresql:postgresql:42.6.0'
-        implementation 'org.springframework.boot:spring-boot-starter-actuator'
-        implementation 'io.micrometer:micrometer-registry-prometheus'
-    }
-
-    pmd {
-        toolVersion = "6.55.0"
-    }
-
-}
-
-project("client") {
-
-    sourceCompatibility = '17'
-
-    bootJar {
-        launchScript()
-    }
-
-    dependencies {
-        implementation project(':common')
-        implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-        implementation 'org.springframework.boot:spring-boot-starter-security'
-        implementation 'org.springframework.session:spring-session-core'
-    }
-
-    pmd {
-        toolVersion = "6.55.0"
-    }
-
-}
-
-project("common") {
-    bootJar {
-        enabled = false
-    }
-}
-
-
+sourceSets.main.java.srcDirs = [
+        "$rootDir/client/build/generated/src",
+        "$rootDir/server/build/generated-server/src"
+]

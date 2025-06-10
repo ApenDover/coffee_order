@@ -19,7 +19,7 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 import org.hibernate.proxy.HibernateProxy;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Objects;
 
@@ -32,7 +32,6 @@ import java.util.Objects;
 public class CafeOrder {
 
     @Id
-    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "orderingSequence")
     @SequenceGenerator(name = "orderingSequence", sequenceName = "seq_order_id", allocationSize = 5)
     private Integer id;
@@ -65,10 +64,10 @@ public class CafeOrder {
     private Boolean status;
 
     @Column(name = "date_create")
-    private LocalDateTime date;
+    private OffsetDateTime date;
 
     @Column(name = "date_ready")
-    private LocalDateTime dateReady;
+    private OffsetDateTime dateReady;
 
     private String comment;
 
@@ -104,7 +103,7 @@ public class CafeOrder {
             return false;
         }
         final var that = (CafeOrder) object;
-        return getId() != null && Objects.equals(getId(), that.getId());
+        return this.id != null && Objects.equals(getId(), that.getId());
     }
 
     @Override

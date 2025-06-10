@@ -4,4 +4,4 @@ spring:
   autoconfigure:
     exclude: org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
 server-back:
-  address: http://localhost:8080
+  url: http://localhost:8080

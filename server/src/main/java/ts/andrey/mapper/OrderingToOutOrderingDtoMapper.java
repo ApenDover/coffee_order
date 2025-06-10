@@ -3,9 +3,9 @@ package ts.andrey.mapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
-import ts.andrey.common.dto.InOutOrderingDTO;
 import ts.andrey.entity.CafeOrder;
 import ts.andrey.entity.Dessert;
+import ts.andrey.server.model.InOutOrderingDTO;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -7,7 +7,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import ts.andrey.entity.CafeOrder;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 @Repository
@@ -17,7 +17,7 @@ public interface OrderRepository extends JpaRepository<CafeOrder, Integer> {
     @Query("UPDATE CafeOrder SET status = :status, dateReady = :date WHERE id = :id")
     void update(
             @Param("status") boolean status,
-            @Param("date") LocalDateTime date,
+            @Param("date") OffsetDateTime date,
             @Param("id") int id);
 
     @Query(value = "select o from CafeOrder o where o.date > CURRENT_DATE")

@@ -91,7 +91,7 @@
                             <!--                            <div th:text="${card.isCheck() ? 'M' : space}"-->
                             <!--                                 style="display: table-cell; text-align: left; font-size: 10px;">-->
                             <!--                            </div>-->
-                            <div th:text="${cafeOrder.giveDateOrder()}"
+                            <div th:text="${cafeOrder.getDateOrder()}"
                                  style="display: table-cell; text-align: center; font-size: 10px;">
                             </div>
                         </div>
@@ -106,7 +106,7 @@
                              style="font-size: 10px; margin: 7px; font-weight: bold;"></div>
                         <div th:if="${cafeOrder.getDessert() != null}">
                             </br>
-                            <div th:text="${cafeOrder.giveDessert()}"></div>
+                            <div th:text="${cafeOrder.getDessert()}"></div>
                             <!--                            <div th:each="dessert:${cafeOrder.getDessert()}">-->
                             <!--                             <pre th:text="${dessert}"-->
                             <!--                                  style="font-size: 10px; margin: 7px; font-weight: bold;">-->
@@ -117,7 +117,7 @@
                         <div th:text="${cafeOrder.getPrice() + ' руб.'}"
                              style="font-size: 10px; margin: 7px; font-weight: bold;"></div>
                         <br>
-                        <div th:text="${cafeOrder.isStatus()}"
+                        <div th:text="${cafeOrder.getStatus()}"
                              style="font-size: 10px; margin: 7px; font-weight: bold;"></div>
                         <div th:if="${cafeOrder.getComment() != null}">
                             <a th:text="${'К: ' + cafeOrder.getComment()}"></a>
@@ -141,16 +141,18 @@
                 <th>Дата заказа</th>
                 <th>Дата завершения</th>
                 <th>Цена</th>
+                <th>Комментарий</th>
             </tr>
             <tr th:each="orderTrue : ${orderTrueList}">
                 <td th:text="${orderTrue.getId()}"></td>
                 <td th:text="${orderTrue.getDrink()}"></td>
                 <td th:text="${orderTrue.getMilk()}"></td>
                 <td th:text="${orderTrue.getSyrup()}"></td>
-                <td th:text="${orderTrue.giveDessert()}"></td>
-                <td th:text="${orderTrue.giveDateOrder()}"></td>
-                <td th:text="${orderTrue.giveDateReady()}"></td>
+                <td th:text="${orderTrue.getDessert()}"></td>
+                <td th:text="${orderTrue.getDateOrder()}"></td>
+                <td th:text="${orderTrue.getDateReady()}"></td>
                 <td th:text="${orderTrue.getPrice()}"></td>
+                <td th:text="${orderTrue.getComment()}"></td>
             </tr>
         </table>
     </div>

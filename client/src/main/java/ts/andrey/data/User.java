@@ -1,4 +1,4 @@
-package ts.andrey.common.dto;
+package ts.andrey.data;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

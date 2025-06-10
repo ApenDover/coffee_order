@@ -1,0 +1,93 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.5.0'
+    id 'io.spring.dependency-management' version '1.1.7'
+    id 'org.openapi.generator' version '7.4.0'
+    id 'io.freefair.lombok' version '8.6'
+    id 'checkstyle'
+    id 'pmd'
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+group = 'ts.andrey'
+version = '0.1'
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.mapstruct:mapstruct:1.5.5.Final'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'io.micrometer:micrometer-registry-prometheus'
+    implementation 'jakarta.validation:jakarta.validation-api:3.1.1'
+
+    implementation 'org.openapitools:jackson-databind-nullable:0.2.6'
+    implementation 'io.swagger.core.v3:swagger-annotations:2.2.31'
+
+    runtimeOnly 'org.postgresql:postgresql'
+
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
+    annotationProcessor 'org.projectlombok:lombok:1.18.38'
+
+    compileOnly 'org.projectlombok:lombok:1.18.38'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.0'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.38'
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+bootJar {
+    enabled = true
+}
+
+openApiGenerate {
+    generatorName = "spring"
+    inputSpec = "$rootDir/server/src/main/resources/openapi/serverApi.yml"
+    outputDir = "$buildDir/generated-server"
+    apiPackage = "ts.andrey.server.api"
+    modelPackage = "ts.andrey.server.model"
+    invokerPackage = "ts.andrey.server.invoker"
+
+    configOptions = [
+            library             : "spring-boot",
+            dateLibrary         : "java8",
+            useSpringBoot3      : "true",
+            interfaceOnly       : "true",
+            serializationLibrary: "jackson",
+            generateApiTests    : "false",
+            generateModelTests  : "false",
+            returnResponse      : "false"
+    ]
+}
+
+tasks.named("compileJava").configure {
+    dependsOn tasks.named("openApiGenerate")
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir "$buildDir/generated-server/src/main/java"
+        }
+    }
+    test {
+        java {
+            srcDir "$buildDir/generated-server/src/test/java"
+        }
+    }
+}
+
+test {
+    useJUnitPlatform()
+}

@@ -5,9 +5,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ts.andrey.entity.NewOrderCreate;
+import ts.andrey.mapper.DtoEntityMapper;
 import ts.andrey.repositories.NewOrderCreateRepository;
+import ts.andrey.server.model.NewOrderCreateDto;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 @Service
 @RequiredArgsConstructor
@@ -15,6 +17,7 @@ import java.time.LocalDateTime;
 public class NewOrderCreateService {
 
     private final NewOrderCreateRepository newOrderCreateRepository;
+    private final DtoEntityMapper dtoEntityMapper;
 
     @PostConstruct
     private NewOrderCreate getNewOrderCreateOrCreateThis() {
@@ -24,19 +27,20 @@ public class NewOrderCreateService {
         }
         final var newOrder = new NewOrderCreate()
                 .setId(1)
-                .setUpdateTime(LocalDateTime.now())
+                .setUpdateTime(OffsetDateTime.now())
                 .setUpdate(false);
         return newOrderCreateRepository.save(newOrder);
     }
 
-    public NewOrderCreate getNewOrderCreate() {
-        return getNewOrderCreateOrCreateThis();
+    public NewOrderCreateDto getNewOrderCreate() {
+        final var newOrder = getNewOrderCreateOrCreateThis();
+        return dtoEntityMapper.mapCafeOrder(newOrder);
     }
 
     @Transactional
     public void makeTrue() {
         final var createdOrder = getNewOrderCreateOrCreateThis().setUpdate(true)
-                .setUpdateTime(LocalDateTime.now());
+                .setUpdateTime(OffsetDateTime.now());
         newOrderCreateRepository.save(createdOrder);
     }
 
@@ -44,7 +48,7 @@ public class NewOrderCreateService {
     public void makeFalse() {
         final var newOrderCreate = getNewOrderCreateOrCreateThis()
                 .setUpdate(false)
-                .setUpdateTime(LocalDateTime.now());
+                .setUpdateTime(OffsetDateTime.now());
         newOrderCreateRepository.save(newOrderCreate);
     }
 

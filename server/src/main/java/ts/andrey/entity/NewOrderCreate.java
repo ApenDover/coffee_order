@@ -1,7 +1,5 @@
 package ts.andrey.entity;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -12,7 +10,7 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 import org.hibernate.proxy.HibernateProxy;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.Objects;
 
 @Getter
@@ -26,9 +24,8 @@ public class NewOrderCreate {
     @Id
     private Integer id;
 
-    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @Column(name = "update_time")
-    private LocalDateTime updateTime;
+    private OffsetDateTime updateTime;
 
     private boolean update;
 
