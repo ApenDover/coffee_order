@@ -5,8 +5,18 @@
         "http://www.puppycrawl.com/dtds/suppressions_1_1.dtd">
 
 <suppressions>
-    <suppress files="[\\/]generated[\\/]" checks="[a-zA-Z0-9]*"/>
-    <suppress files="[\\/]generated-sources[\\/]" checks="[a-zA-Z0-9]*"/>
     <suppress checks="MagicNumber" files=".*[\\/]src[\\/](test|integration-test)[\\/]"/>
     <suppress checks="VisibilityModifier" files=".*[\\/]src[\\/](test|integration-test)[\\/]"/>
+    <suppress checks="[a-zA-Z0-9]*" files="[\\/]generated-sources[\\/]"/>
+    <suppress checks="[a-zA-Z0-9]*" files="[\\/]generated-server[\\/]"/>
+    <suppress checks="[a-zA-Z0-9]*" files="[\\/]generated[\\/]"/>
+    <suppress checks="MagicNumber" files=".*[\\/]src[\\/](test|integration-test)[\\/]"/>
+    <suppress checks="AvoidStarImport" files=".*[\\/]src[\\/](test|integration-test)[\\/]"/>
+    <suppress checks="VisibilityModifier" files=".*[\\/]src[\\/](test|integration-test)[\\/]"/>
+    <suppress checks="AvoidStarImport" files=".*[\\/]src[\\/](test|integration-test)[\\/]"/>
+    <suppress checks="MethodLength" files=".*[\\/]src[\\/](test|integration-test)[\\/]"/>
+
+    <suppress files="LocaleCode.java" checks="[a-zA-Z0-9]*"/>
+    <suppress files="LanguageCode.java" checks="[a-zA-Z0-9]*"/>
+    <suppress files="LanguageAlpha3Code.java" checks="[a-zA-Z0-9]*"/>
 </suppressions>

@@ -144,8 +144,8 @@
         <!-- See http://checkstyle.sourceforge.net/config_coding.html -->
         <module name="EmptyStatement"/>
         <module name="EqualsHashCode"/>
-        <module name="HiddenField" >
-            <property name="ignoreConstructorParameter" value="true" />
+        <module name="HiddenField">
+            <property name="ignoreConstructorParameter" value="true"/>
         </module>
         <module name="IllegalInstantiation"/>
         <module name="InnerAssignment"/>
@@ -165,7 +165,8 @@
         <module name="HideUtilityClassConstructor"/>
         <module name="SuppressionXpathSingleFilter">
             <property name="checks" value="HideUtilityClassConstructor"/>
-            <property name="query" value="//*[MODIFIERS//*[@text = 'UtilityClass' or @text='NoArgsConstructor' or @text = 'SpringBootApplication']]/descendant-or-self::node()"/>
+            <property name="query"
+                      value="//*[MODIFIERS//*[@text = 'UtilityClass' or @text='NoArgsConstructor' or @text = 'SpringBootApplication']]/descendant-or-self::node()"/>
         </module>
         <module name="InterfaceIsType"/>
         <module name="VisibilityModifier"/>
