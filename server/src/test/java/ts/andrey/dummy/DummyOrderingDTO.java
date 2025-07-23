@@ -12,14 +12,13 @@ public class DummyOrderingDTO {
 
     public OrderingDTO getDefault() {
         final var dto = new OrderingDTO();
-        dto.setOrderId(100);
         dto.setSyrupId(1);
         dto.setDrinkId(2);
         dto.setMilkId(3);
-        dto.setDessertsId(List.of(4, 5, 6));
+        dto.setDessertsId(List.of(1));
         dto.setStatus(true);
         dto.setComment("comment");
-        TestReflectionUtils.assertAllFieldsNotNullWithExclude(dto, "id");
+        TestReflectionUtils.assertAllFieldsNotNullWithExclude(dto, "orderId");
         return dto;
     }
 

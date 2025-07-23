@@ -39,6 +39,9 @@ dependencies {
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.38'
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("org.testcontainers:junit-jupiter")
+    testImplementation("org.testcontainers:postgresql")
 }
 
 configurations {
@@ -99,4 +102,16 @@ checkstyle {
             'checkstyle.suppressions.file': "$rootDir/config/checkstyle/suppressions.xml"
     ]
     showViolations = true
+}
+
+sourceSets {
+    test {
+        resources {
+            srcDirs("src/test/resources")
+        }
+    }
+}
+
+tasks.processTestResources {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }

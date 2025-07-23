@@ -22,3 +22,9 @@ sourceSets.main.java.srcDirs = [
         "$rootDir/client/build/generated/src",
         "$rootDir/server/build/generated-server/src"
 ]
+
+dependencyManagement {
+    imports {
+        mavenBom("org.testcontainers:testcontainers-bom:1.19.7") // последняя на июль 2025
+    }
+}

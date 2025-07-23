@@ -36,7 +36,6 @@ public class OrderService {
                 .orElseThrow(() -> new CoffeeServerException(ORDER_NAME, id));
     }
 
-    @Transactional
     public CafeOrder save(CafeOrder cafeOrder) {
         return orderRepository.save(cafeOrder);
     }
